@@ -1,0 +1,14 @@
+{
+  "cSpell.words": [
+    "Interop",
+    "Tiddy"
+  ],
+  "workbench.colorCustomizations": {
+    "statusBar.background": "#06bb00",
+    "activityBar.background": "#06bb00",
+    "titleBar.activeBackground": "#06bb00",
+    "titleBar.inactiveBackground": "#06bb0099",
+    "titleBar.activeForeground": "#e7e7e7",
+    "titleBar.inactiveForeground": "#e7e7e799"
+  }
+}

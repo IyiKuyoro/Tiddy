@@ -1,0 +1,63 @@
+{
+  "name": "tiddy",
+  "version": "0.1.0",
+  "description": "Tiddy is a nice slack app that helps keep your workspace clean by moving messages to the appropriate channel",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "npm run format && tsc",
+    "cev": "chmod u+x ./scripts/cev.sh && ./scripts/cev.sh",
+    "dev": "nodemon",
+    "format": "npm run lint && prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "lint": "tslint -p tsconfig.json",
+    "mat": "chmod u+x ./scripts/mat.sh && ./scripts/mat.sh",
+    "setup": "npm i && chmod u+x ./scripts/setup.sh && ./scripts/setup.sh",
+    "start": "NODE_ENV=production node .",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IyiKuyoro/Tiddy.git"
+  },
+  "keywords": [
+    "Tiddy"
+  ],
+  "author": "Opeoluwa Iyi-Kuyoro",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/IyiKuyoro/Tiddy/issues"
+  },
+  "homepage": "https://github.com/IyiKuyoro/Tiddy#readme",
+  "dependencies": {
+    "@types/dotenv": "^6.1.1",
+    "@types/express": "^4.16.1",
+    "@types/morgan": "^1.7.35",
+    "@types/node": "^12.0.4",
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1",
+    "morgan": "^1.9.1",
+    "nodemon": "^1.19.1",
+    "r7insight_node": "^1.8.2",
+    "sequelize": "^5.8.7",
+    "sequelize-cli": "^5.4.0",
+    "sequelize-typescript": "^0.6.11",
+    "typescript": "^3.5.1"
+  },
+  "devDependencies": {
+    "prettier": "^1.17.1",
+    "ts-node-register": "^1.0.0",
+    "tslint": "^5.17.0",
+    "tslint-config-prettier": "^1.18.0"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "**/*.test.js",
+      "**/*.spec.js",
+      ".git"
+    ],
+    "watch": [
+      "src"
+    ],
+    "exec": "node ./bin/dev",
+    "ext": "ts"
+  }
+}
