@@ -8,11 +8,19 @@ const config = () => {
   switch (env) {
     case 'test': {
       return {
+        DATABASE: process.env.DATABASE,
+        DATABASE_HOST: process.env.DATABASE_HOST,
+        DATABASE_PASSWORD: process.env.DATABASE_PASSWORD,
+        DATABASE_USERNAME: process.env.DATABASE_USERNAME,
         PORT: process.env.PORT,
       };
     }
     case 'production': {
       return {
+        DATABASE: process.env.DATABASE,
+        DATABASE_HOST: process.env.DATABASE_HOST,
+        DATABASE_PASSWORD: process.env.DATABASE_PASSWORD,
+        DATABASE_USERNAME: process.env.DATABASE_USERNAME,
         ENV: 'production',
         LOGGER_REGION: process.env.LOGGER_REGION,
         LOGGER_TOKEN: process.env.LOGGER_TOKEN,
@@ -21,6 +29,10 @@ const config = () => {
     }
     default: {
       return {
+        DATABASE: process.env.DATABASE,
+        DATABASE_HOST: process.env.DATABASE_HOST,
+        DATABASE_PASSWORD: process.env.DATABASE_PASSWORD,
+        DATABASE_USERNAME: process.env.DATABASE_USERNAME,
         ENV: 'development',
         LOGGER_REGION: process.env.LOGGER_REGION,
         LOGGER_TOKEN: process.env.LOGGER_TOKEN,

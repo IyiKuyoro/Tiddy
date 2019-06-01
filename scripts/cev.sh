@@ -3,7 +3,7 @@
 # This script helps create your local version of the environment varaibles
 
 # check if env already exisits
-if [[ -d $(pwd)/.env ]]; then
+if [[ -f $(pwd)/.env ]]; then
   echo ".env already exists"
   exit 0
 fi
