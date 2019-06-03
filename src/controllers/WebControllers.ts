@@ -10,6 +10,12 @@ class WebController {
       title: 'Privacy Policy',
     });
   }
+
+  public static RenderSupportPage(req: any, res: any) {
+    res.render('support', {
+      title: 'Support',
+    });
+  }
 }
 
 export default WebController;
