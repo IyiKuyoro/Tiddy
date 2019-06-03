@@ -37,6 +37,7 @@
     "morgan": "^1.9.1",
     "nodemon": "^1.19.1",
     "r7insight_node": "^1.8.2",
+    "reflect-metadata": "^0.1.13",
     "sequelize": "^5.8.7",
     "sequelize-cli": "^5.4.0",
     "sequelize-typescript": "^0.6.11",
