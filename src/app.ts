@@ -22,7 +22,7 @@ app.use(
 );
 app.use(morgan('dev'));
 
-app.get('/', router);
+app.use('/', router);
 
 app.get('*', (req, res) => {
   res.status(404).json({
