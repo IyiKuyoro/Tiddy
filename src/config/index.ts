@@ -8,7 +8,7 @@ const config = () => {
   switch (env) {
     case 'test': {
       return {
-        DATABASE: process.env.DATABASE,
+        DATABASE: process.env.TEST_DATABASE,
         DATABASE_HOST: process.env.DATABASE_HOST,
         DATABASE_PASSWORD: process.env.DATABASE_PASSWORD,
         DATABASE_USERNAME: process.env.DATABASE_USERNAME,
@@ -17,7 +17,7 @@ const config = () => {
     }
     case 'production': {
       return {
-        DATABASE: process.env.DATABASE,
+        DATABASE: process.env.PROD_DATABASE,
         DATABASE_HOST: process.env.DATABASE_HOST,
         DATABASE_PASSWORD: process.env.DATABASE_PASSWORD,
         DATABASE_USERNAME: process.env.DATABASE_USERNAME,
@@ -29,7 +29,7 @@ const config = () => {
     }
     default: {
       return {
-        DATABASE: process.env.DATABASE,
+        DATABASE: process.env.DEV_DATABASE,
         DATABASE_HOST: process.env.DATABASE_HOST,
         DATABASE_PASSWORD: process.env.DATABASE_PASSWORD,
         DATABASE_USERNAME: process.env.DATABASE_USERNAME,
