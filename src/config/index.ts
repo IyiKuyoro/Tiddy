@@ -13,6 +13,8 @@ const config = () => {
         DATABASE_PASSWORD: process.env.DATABASE_PASSWORD,
         DATABASE_USERNAME: process.env.DATABASE_USERNAME,
         PORT: process.env.PORT,
+        SLACK_CLIENT_ID: 111111111111.111111111111,
+        SLACK_CLIENT_SECRET: 11111111111111111111111111111111,
       };
     }
     case 'production': {
@@ -25,6 +27,8 @@ const config = () => {
         LOGGER_REGION: process.env.LOGGER_REGION,
         LOGGER_TOKEN: process.env.LOGGER_TOKEN,
         PORT: process.env.PORT,
+        SLACK_CLIENT_ID: process.env.SLACK_CLIENT_ID,
+        SLACK_CLIENT_SECRET: process.env.SLACK_CLIENT_SECRET,
       };
     }
     default: {
@@ -37,6 +41,8 @@ const config = () => {
         LOGGER_REGION: process.env.LOGGER_REGION,
         LOGGER_TOKEN: process.env.LOGGER_TOKEN,
         PORT: process.env.PORT,
+        SLACK_CLIENT_ID: process.env.SLACK_CLIENT_ID,
+        SLACK_CLIENT_SECRET: process.env.SLACK_CLIENT_SECRET,
       };
     }
   }

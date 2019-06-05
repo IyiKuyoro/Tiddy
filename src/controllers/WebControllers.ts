@@ -1,8 +1,9 @@
-import axios from "axios";
+import axios from 'axios';
 import qs from 'qs';
 
-import { Logger } from "..//logger";
 import config from '../config';
+import { Logger } from '../logger';
+import WorkspaceService from '../services/WorkspaceServices';
 
 class WebController {
   public static RenderHomePage(req: any, res: any) {
@@ -43,6 +44,15 @@ class WebController {
       if (!response.data.ok) {
         throw new Error(`Could not install app. ${response.data.error}`);
       }
+
+      await WorkspaceService.addWorkspace(
+        response.data.access_token,
+        response.data.scope,
+        response.data.team_name,
+        response.data.team_id,
+        response.data.bot.bot_user_id,
+        response.data.bot.bot_access_token,
+      );
 
       res.render('installationSuccess', {
         title: 'Success',

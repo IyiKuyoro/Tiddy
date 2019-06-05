@@ -23,6 +23,11 @@ const handleErrors = (e: Error) => {
   process.exit(1);
 };
 
+const closeConnection = () => {
+  process.exit(0);
+  client.end();
+}
+
 const successfulMigration = (file: string) => {
   const text = "INSERT INTO meta(migration_file) VALUES($1);"
 
@@ -31,7 +36,7 @@ const successfulMigration = (file: string) => {
     values: [file.replace(/.[a-z]+$/, '')]
   }).then(() => {
     Logger.info(`${file} migration successfully ran.`);
-    process.exit(0);
+    closeConnection();
   })
     .catch(handleErrors);
 }
@@ -55,7 +60,7 @@ const runMigrations = () => {
 
     if (items.length <= 0) {
       Logger.info('There are no migrations to run.');
-      process.exit(0);
+      closeConnection();
     }
 
     items.forEach((file: string, index: number) => {
@@ -67,7 +72,7 @@ const runMigrations = () => {
         fs.readFile(`${process.cwd()}/src/database/migrations/${file}`, 'utf8', (error: Error, data: string) => executeSQL(error, data, file));
       } else if (extension === '.sql') {
         Logger.info('Migrations are up to date!');
-        process.exit(0);
+        closeConnection();
       }
     });
   });
