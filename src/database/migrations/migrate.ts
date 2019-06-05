@@ -10,44 +10,48 @@ const client = new Client({
   password: config.DATABASE_PASSWORD,
   port: 5432,
   user: config.DATABASE_USERNAME,
-})
+});
 
-client.connect()
+client.connect();
 
-const createMetaTable = "CREATE TABLE IF NOT EXISTS meta (migration_id serial PRIMARY KEY, migration_file VARCHAR (50) UNIQUE NOT NULL);";
-const getMigrationsText = "SELECT * FROM meta;";
+const createMetaTable =
+  'CREATE TABLE IF NOT EXISTS meta (migration_id serial PRIMARY KEY, migration_file VARCHAR (50) UNIQUE NOT NULL);';
+const getMigrationsText = 'SELECT * FROM meta;';
 const migratedFiles: string[] = [];
 
 const handleErrors = (e: Error) => {
-  Logger.error(e)
+  Logger.error(e);
   process.exit(1);
 };
 
 const closeConnection = () => {
   process.exit(0);
   client.end();
-}
+};
 
 const successfulMigration = (file: string) => {
-  const text = "INSERT INTO meta(migration_file) VALUES($1);"
+  const text = 'INSERT INTO meta(migration_file) VALUES($1);';
 
-  client.query({
-    text,
-    values: [file.replace(/.[a-z]+$/, '')]
-  }).then(() => {
-    Logger.info(`${file} migration successfully ran.`);
-    closeConnection();
-  })
+  client
+    .query({
+      text,
+      values: [file.replace(/.[a-z]+$/, '')],
+    })
+    .then(() => {
+      Logger.info(`${file} migration successfully ran.`);
+      closeConnection();
+    })
     .catch(handleErrors);
-}
+};
 
 const executeSQL = (err: Error, data: string, file: string) => {
   if (err) {
     Logger.error(err);
     process.exit(1);
-  };
+  }
 
-  client.query(data)
+  client
+    .query(data)
     .then(() => successfulMigration(file))
     .catch(handleErrors);
 };
@@ -69,7 +73,9 @@ const runMigrations = () => {
 
       if (migratedFiles.indexOf(fileName) < 0 && extension === '.sql') {
         Logger.info(`Running: ${process.cwd()}/src/database/migrations/${file}`);
-        fs.readFile(`${process.cwd()}/src/database/migrations/${file}`, 'utf8', (error: Error, data: string) => executeSQL(error, data, file));
+        fs.readFile(`${process.cwd()}/src/database/migrations/${file}`, 'utf8', (error: Error, data: string) =>
+          executeSQL(error, data, file),
+        );
       } else if (extension === '.sql') {
         Logger.info('Migrations are up to date!');
         closeConnection();
@@ -89,11 +95,13 @@ const saveMigratedFiles = (data: any) => {
 };
 
 const getPastMigrations = () => {
-  client.query(getMigrationsText)
+  client
+    .query(getMigrationsText)
     .then(saveMigratedFiles)
     .catch(handleErrors);
 };
 
-client.query(createMetaTable)
+client
+  .query(createMetaTable)
   .then(getPastMigrations)
   .catch(handleErrors);
