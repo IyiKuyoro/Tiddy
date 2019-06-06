@@ -1,37 +1,34 @@
-import { Client } from 'pg';
-
-import config from '../config';
+import client from '../database/client';
 import { Logger } from '../logger';
-
-const client = new Client({
-  database: config.DATABASE,
-  host: config.DATABASE_HOST,
-  password: config.DATABASE_PASSWORD,
-  port: 5432,
-  user: config.DATABASE_USERNAME,
-});
 
 export default class WorkspaceService {
   public static async addWorkspace(
     teamId: string,
     accessToken: string,
-    scope: string,
     teamName: string,
+    scope: string,
     botUserId: string,
     botAccessToken: string,
   ) {
     try {
-      await client.connect();
-
-      const text =
-        'INSERT INTO workspace(team_id, access_token, scope, team_name, bot_user_id, bot_access_token, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8);';
+      const text = `INSERT INTO workspace (
+          team_id, access_token, scope, team_name, bot_user_id, bot_access_token, created_at, updated_at
+        ) VALUES (
+          $1, $2, $3, $4, $5, $6, $7, $8
+        ) ON CONFLICT (team_id)
+        DO
+          UPDATE
+            SET
+              access_token = $2,
+              scope = $3,
+              team_name = $4,
+              bot_user_id = $5,
+              bot_access_token = $6;`;
 
       const newRecord = await client.query({
         text,
         values: [teamId, accessToken, scope, teamName, botUserId, botAccessToken, new Date(), new Date()],
       });
-
-      await client.end();
 
       return newRecord;
     } catch (error) {
