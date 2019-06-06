@@ -16,4 +16,13 @@ export class Logger {
       console.log(msg);
     }
   }
+
+  public static error(error: Error): void {
+    if (config.ENV === 'production') {
+      log.error(error);
+    } else {
+      // tslint:disable-next-line:no-console
+      console.log(error);
+    }
+  }
 }

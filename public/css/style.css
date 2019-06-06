@@ -1,0 +1,42 @@
+html,
+body {
+  display: flex;
+  margin: 0;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 {
+  font-weight: bold;
+  font-size: 50px;
+  line-height: 59px;
+}
+
+p {
+  font-weight: normal;
+  font-size: 30px;
+  line-height: 35px;
+  margin-bottom: 90px;
+}
+
+.fonts {
+  font-family: 'Roboto', sans-serif;
+  text-align: center;
+  color: #000000;
+  font-style: normal;
+}
+
+.flex {
+  display: flex;
+  flex-direction: column;
+}
+
+.center {
+  margin: 0 auto;
+}
+
+.contain {
+  max-width: 670px;
+  align-items: center;
+}
