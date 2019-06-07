@@ -11,6 +11,7 @@
     "lint": "tslint -p tsconfig.json",
     "mat": "chmod u+x ./scripts/mat.sh && ./scripts/mat.sh",
     "migrate": "node bin/migrate",
+    "un-migrate": "node bin/unMigrate",
     "setup": "npm i && chmod u+x ./scripts/setup.sh && ./scripts/setup.sh",
     "start": "NODE_ENV=production node .",
     "test": "jest"
