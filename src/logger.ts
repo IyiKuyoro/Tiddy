@@ -1,16 +1,22 @@
 import Rapid7 from 'r7insight_node';
+import winston from 'winston';
+import { Loggly } from 'winston-loggly-bulk';
 
 import config from './config';
 
-const log = new Rapid7({
-  region: config.LOGGER_REGION,
-  token: config.LOGGER_TOKEN,
-});
+winston.add(
+  new Loggly({
+    json: true,
+    subdomain: config.LOGGER_SUBDOMAIN,
+    tags: ['Winston-NodeJS'],
+    token: config.LOGGER_TOKEN,
+  }),
+);
 
 export class Logger {
   public static info(msg: string): void {
     if (config.ENV === 'production') {
-      log.info(msg);
+      winston.info(msg);
     } else {
       // tslint:disable-next-line:no-console
       console.log(msg);
@@ -19,7 +25,7 @@ export class Logger {
 
   public static error(error: Error): void {
     if (config.ENV === 'production') {
-      log.error(error);
+      winston.error(error);
     } else {
       // tslint:disable-next-line:no-console
       console.log(error);
