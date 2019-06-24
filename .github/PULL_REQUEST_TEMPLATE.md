@@ -10,6 +10,6 @@
 - Change all environment variables to your actual variables
 - Build the production code using `npm run build`
 
-## What are the relevant github project link
+## What are the relevant PT board stories link
 
 ## Any background context you want to add
