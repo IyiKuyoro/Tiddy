@@ -1,3 +1,5 @@
+import BlockElement from "../BlockElement";
+
 export enum BlockType {
   section = 'section',
   divider = 'divider',
@@ -11,7 +13,7 @@ export enum BlockType {
  * If this were a language like C# it would have been an abstract class :wink:
  * kindly visit https://api.slack.com/reference/messaging/blocks#section
  */
-export class Block {
+export abstract class Block {
   public type: BlockType;
   public block_id: string;
 

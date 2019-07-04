@@ -18,6 +18,5 @@ export class Text {
   constructor(
     public type: TextType,
     public text: string,
-    public emoji?: boolean,
-    public verbatim?: boolean) {}
+    public emoji: boolean = false) {}
 }

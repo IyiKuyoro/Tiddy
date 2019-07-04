@@ -1,4 +1,4 @@
-import { Block } from './Block';
+import { Block } from './Blocks/Block';
 
 /**
  * @description This class builds an interactive message object

@@ -3,7 +3,6 @@ import { ConfirmationDialog } from './CompositionObjects/ConfirmationDialog';
 import { Text } from './CompositionObjects/Text';
 
 export enum ButtonStyles {
-  default = 'default',
   primary = 'primary',
   danger = 'danger',
 }
@@ -16,10 +15,10 @@ export enum ButtonStyles {
 export default class ButtonElement extends BlockElement {
   public text: Text;
   public action_id: string;
-  public url?: string;
-  public value?: string;
-  public style?: ButtonStyles;
-  public confirm?: ConfirmationDialog;
+  // public url?: string;
+  // public value?: string;
+  // public style?: ButtonStyles;
+  // public confirm?: ConfirmationDialog;
 
   /**
    * @description Create a new block element button
@@ -30,14 +29,14 @@ export default class ButtonElement extends BlockElement {
    * @param  {string} url? A URL to load in the user's browser when the button is clicked
    * @param  {ConfirmationDialog} confirm? An optional confirmation dialog after the button is clicked
    */
-  constructor(text: Text, actionId: string, style: ButtonStyles = ButtonStyles.default, value?: string, url?: string, confirm?: ConfirmationDialog) {
+  constructor(text: Text, actionId: string) {
     super(BlockElementType.button);
 
     this.text = text;
     this.action_id = actionId;
-    this.url = url;
-    this.value = value;
-    this.style = style;
-    this.confirm = confirm;
+    // this.url = url;
+    // this.value = value;
+    // this.style = style;
+    // this.confirm = confirm;
   }
 }

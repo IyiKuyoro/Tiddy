@@ -1,6 +1,5 @@
-import ButtonElement from '../ButtonElement';
+import Section from '../Blocks/Section';
 import { Text, TextType } from '../CompositionObjects/Text';
-import Section from '../Section';
 import SlackInteractiveBlockMessage from '../SlackInteractiveBlockMessage';
 
 describe('SlackInteractiveBlockMessage', () => {
@@ -21,10 +20,9 @@ describe('SlackInteractiveBlockMessage', () => {
         block_id: undefined,
         fields: undefined,
         text: {
-          emoji: undefined,
-            text: 'Hello slack, just a test section text',
+          emoji: false,
+          text: 'Hello slack, just a test section text',
           type: 'plain_text',
-          verbatim: undefined,
         },
         type: 'section',
       }
@@ -34,10 +32,7 @@ describe('SlackInteractiveBlockMessage', () => {
   describe('addBlock', () => {
     it('should add a new block element', () => {
       message.addBlock(
-        new ButtonElement(
-          new Text(TextType.plainText, 'Submit'),
-          'actionId'
-        )
+        new Section(new Text(TextType.plainText, 'yup'))
       );
 
       expect(message.blocks.length).toBe(2);

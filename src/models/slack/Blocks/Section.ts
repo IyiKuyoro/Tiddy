@@ -1,6 +1,6 @@
+import BlockElement from '../BlockElement';
+import { Text } from '../CompositionObjects/Text';
 import { Block, BlockType } from './Block';
-import BlockElement from './BlockElement';
-import { Text } from './CompositionObjects/Text';
 
 /**
  * @description This class creates an instance of a section

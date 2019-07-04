@@ -1,27 +1,23 @@
+import Section from '../Blocks/Section';
 import ButtonElement from '../ButtonElement';
 import { Text, TextType } from '../CompositionObjects/Text';
-import Section from '../Section';
 
 describe('Section', () => {
   it('should create a new block section', () => {
-    const section = new Section({
-      text: 'Some text in the section',
-      type: TextType.plainText,
-    },
+    const section = new Section(new Text(TextType.plainText, 'yup'),
     '12ABCD',
-    [{
-      text: 'Some text',
-      type: TextType.plainText,
-    }],
+    [new Text(TextType.plainText, 'Some text')],
     new ButtonElement(new Text(TextType.plainText, 'yes'), 'id'));
 
     expect(section.type).toEqual('section');
     expect(section.text).toEqual({
-      text: 'Some text in the section',
+      emoji: false,
+      text: 'yup',
       type: 'plain_text',
     });
     expect(section.block_id).toEqual('12ABCD');
     expect(section.fields).toEqual([{
+      emoji: false,
       text: 'Some text',
       type: TextType.plainText,
     }]);

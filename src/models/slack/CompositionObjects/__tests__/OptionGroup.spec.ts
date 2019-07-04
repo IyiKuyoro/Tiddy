@@ -19,10 +19,9 @@ describe('OptionsGroup', () => {
 
     expect(optionGroup.options.length).toBe(2);
     expect(optionGroup.label).toEqual({
-      emoji: undefined,
+      emoji: false,
       text: 'option',
-      type: 'plain_text',
-      verbatim: undefined
+      type: 'plain_text'
     });
   });
 
