@@ -7,13 +7,9 @@ module.exports = {
   clearMocks: true, // Automatically clear mock calls and instances between every test
   collectCoverage: true,
   collectCoverageFrom: [
-    '<rootDir>/src/**/*.js',
+    '<rootDir>/src/**/*.ts',
     '!<rootDir>/src/index.js',
-    '!<rootDir>/src/config.js',
-    '!<rootDir>/src/logger.js',
-    '!<rootDir>/src/scripts/**',
     '!**/node_modules/**',
-    '!src/database',
   ],
   coverageDirectory: 'coverage', // The directory where Jest should output its coverage files
   coveragePathIgnorePatterns: [
@@ -49,7 +45,9 @@ module.exports = {
   testPathIgnorePatterns: [
     '\\\\node_modules\\\\',
   ],
-  transform: null,
+  transform: {
+    "^.+\\.tsx?$": "ts-jest"
+  },
   transformIgnorePatterns: [
     '\\\\node_modules\\\\',
   ],

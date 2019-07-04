@@ -3,7 +3,8 @@
     "Interop",
     "Loggly",
     "Tiddy",
-    "exphbs"
+    "exphbs",
+    "mrkdwn"
   ],
   "workbench.colorCustomizations": {
     "statusBar.background": "#06bb00",

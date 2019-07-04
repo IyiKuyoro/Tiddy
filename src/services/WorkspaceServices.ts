@@ -36,4 +36,8 @@ export default class WorkspaceService {
       throw error;
     }
   }
+
+  public static async getWorkspaceInfo() {
+    
+  }
 }

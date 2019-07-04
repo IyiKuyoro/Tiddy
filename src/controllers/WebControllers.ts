@@ -68,10 +68,9 @@ class WebController {
       });
     }
   }
-
   private static slackInstallationUrl: string = `https://slack.com/oauth/authorize?client_id=${
     config.SLACK_CLIENT_ID
-  }&scope=admin,bot,commands`;
+  }&scope=admin,bot,commands,channels:read,chat:write:bot`;
 }
 
 export default WebController;
