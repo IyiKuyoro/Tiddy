@@ -1,4 +1,4 @@
-import { Logger } from "../logger";
+import { Logger } from "../helpers/logger";
 
 export class SlashCommands {
   public static routeSlashCommand(req: any, res: any, next: any) {

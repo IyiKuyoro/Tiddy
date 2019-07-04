@@ -1,4 +1,4 @@
-import { BlockElement, BlockElementType } from './BlockElement';
+import BlockElement, { BlockElementType } from './BlockElement';
 import { ConfirmationDialog } from './CompositionObjects/ConfirmationDialog';
 import { Text } from './CompositionObjects/Text';
 
@@ -13,7 +13,7 @@ export enum ButtonStyles {
  * For more information on button elements in slack
  * kindly visit https://api.slack.com/reference/messaging/block-elements#button
  */
-export default class Button extends BlockElement {
+export default class ButtonElement extends BlockElement {
   public text: Text;
   public action_id: string;
   public url?: string;

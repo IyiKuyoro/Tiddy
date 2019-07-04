@@ -3,6 +3,7 @@
     "Interop",
     "Loggly",
     "Tiddy",
+    "datepicker",
     "exphbs",
     "mrkdwn"
   ],

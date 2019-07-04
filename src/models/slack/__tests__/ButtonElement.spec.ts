@@ -1,9 +1,10 @@
-import Button, { ButtonStyles } from '../ButtonElement';
+import ButtonElement, { ButtonStyles } from '../ButtonElement';
+import { ConfirmationDialog } from '../CompositionObjects/ConfirmationDialog';
 import { TextType } from '../CompositionObjects/Text';
 
 describe('ButtonElement', () => {
   it('should create a new button element', () => {
-    const button = new Button(
+    const button = new ButtonElement(
       {
         text: 'Submit',
         type: TextType.plainText,
@@ -12,15 +13,10 @@ describe('ButtonElement', () => {
       ButtonStyles.primary,
       '0',
       'http://fakeurl.com',
-      {
-        confirm: TextType.plainText,
-        deny: TextType.plainText,
-        text: {
-          text: 'sample text',
-          type: TextType.mrkdwn,
-        },
+      new ConfirmationDialog('Confirm', {
+        text: 'Are you sure',
         type: TextType.plainText,
-      }
+      }, 'Yes', 'No')
     );
 
     expect(button.type).toEqual('button');
@@ -32,14 +28,5 @@ describe('ButtonElement', () => {
     expect(button.style).toEqual('primary');
     expect(button.value).toBe('0');
     expect(button.url).toBe('http://fakeurl.com');
-    expect(button.confirm).toEqual({
-      confirm: 'plain_text',
-      deny: 'plain_text',
-      text: {
-        text: 'sample text',
-        type: 'mrkdwn',
-      },
-      type: 'plain_text',
-    });
   });
 })
