@@ -1,5 +1,5 @@
 import client from '../database/client';
-import { Logger } from '../logger';
+import { Logger } from '../helpers/logger';
 
 export default class WorkspaceService {
   public static async addWorkspace(

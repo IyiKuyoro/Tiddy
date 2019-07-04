@@ -2,7 +2,7 @@ import axios from 'axios';
 import qs from 'qs';
 
 import config from '../config';
-import { Logger } from '../logger';
+import { Logger } from '../helpers/logger';
 import WorkspaceService from '../services/WorkspaceServices';
 
 class WebController {

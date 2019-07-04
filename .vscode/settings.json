@@ -1,5 +1,10 @@
 {
-  "cSpell.words": ["Interop", "Tiddy", "exphbs"],
+  "cSpell.words": [
+    "Interop",
+    "Loggly",
+    "Tiddy",
+    "exphbs"
+  ],
   "workbench.colorCustomizations": {
     "statusBar.background": "#06bb00",
     "activityBar.background": "#06bb00",
