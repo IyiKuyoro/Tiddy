@@ -1,7 +1,7 @@
 import { Client } from 'pg';
 
 import config from '../../config';
-import { Logger } from '../../logger';
+import { Logger } from '../../helpers/logger';
 
 const client = new Client({
   database: config.DATABASE,

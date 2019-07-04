@@ -1,8 +1,7 @@
-import Rapid7 from 'r7insight_node';
 import winston from 'winston';
 import { Loggly } from 'winston-loggly-bulk';
 
-import config from './config';
+import config from '../config';
 
 winston.add(
   new Loggly({
@@ -16,7 +15,7 @@ winston.add(
 export class Logger {
   public static info(msg: string): void {
     if (config.ENV === 'production') {
-      winston.info(msg);
+      winston.log('info', msg);
     } else {
       // tslint:disable-next-line:no-console
       console.log(msg);
@@ -25,7 +24,7 @@ export class Logger {
 
   public static error(error: Error): void {
     if (config.ENV === 'production') {
-      winston.error(error);
+      winston.log('error', error.message, error);
     } else {
       // tslint:disable-next-line:no-console
       console.log(error);
