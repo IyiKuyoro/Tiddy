@@ -1,9 +1,8 @@
-import Action from '../models/slack/Blocks/Action';
-import Section from '../models/slack/Blocks/Section';
-import ButtonElement from '../models/slack/ButtonElement';
-import { TextType } from '../models/slack/CompositionObjects/Text';
-import { Text } from '../models/slack/CompositionObjects/Text';
-import SlackInteractiveBlockMessage from '../models/slack/SlackInteractiveBlockMessage';
+import ButtonElement from 'slack-block-msg-kit/BlockElements/ButtonElement';
+import Actions from 'slack-block-msg-kit/Blocks/Actions';
+import Section from 'slack-block-msg-kit/Blocks/Section';
+import Text, { TextType } from 'slack-block-msg-kit/CompositionObjects/Text';
+import InteractiveMessage from 'slack-block-msg-kit/InteractiveMessage';
 
 export default class SlashCommandsControllers {
   public static defaultCommand(req: any, res: any) {
@@ -12,14 +11,16 @@ export default class SlashCommandsControllers {
 Here are a few things I can do for you right away. :smile:`, true),
       '001',
     );
-    const actions = new Action([
-      new ButtonElement(new Text(TextType.plainText, 'Add Cleaner'), 'AC001')
-    ], '002');
+    const actions = new Actions([
+      new ButtonElement('Add Channel Watch', 'ACT001')
+    ]);
 
-    const message = new SlackInteractiveBlockMessage(
-      'Hello there I am always happy to help!',
-      [msgSection, actions]
+    const message = new InteractiveMessage(
+      'Hello there I am always happy to help!'
     );
+    message
+      .addBlock(msgSection)
+      .addBlock(actions);
 
     res.status(200).json(message);
   }
