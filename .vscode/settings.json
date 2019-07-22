@@ -3,7 +3,9 @@
     "Interop",
     "Loggly",
     "Tiddy",
-    "exphbs"
+    "datepicker",
+    "exphbs",
+    "mrkdwn"
   ],
   "workbench.colorCustomizations": {
     "statusBar.background": "#06bb00",
