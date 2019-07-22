@@ -15,6 +15,7 @@ const config = () => {
         PORT: process.env.PORT,
         SLACK_CLIENT_ID: 111111111111.111111111111,
         SLACK_CLIENT_SECRET: 11111111111111111111111111111111,
+        SLACK_SIGNING_SECRET: 11111111111111111111111111111111,
       };
     }
     case 'production': {
@@ -29,6 +30,7 @@ const config = () => {
         PORT: process.env.PORT,
         SLACK_CLIENT_ID: process.env.SLACK_CLIENT_ID,
         SLACK_CLIENT_SECRET: process.env.SLACK_CLIENT_SECRET,
+        SLACK_SIGNING_SECRET: process.env.SLACK_SIGNING_SECRET,
       };
     }
     default: {
@@ -43,6 +45,7 @@ const config = () => {
         PORT: process.env.PORT,
         SLACK_CLIENT_ID: process.env.SLACK_CLIENT_ID,
         SLACK_CLIENT_SECRET: process.env.SLACK_CLIENT_SECRET,
+        SLACK_SIGNING_SECRET: process.env.SLACK_SIGNING_SECRET,
       };
     }
   }

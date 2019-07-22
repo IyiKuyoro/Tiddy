@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
-import webRouter from './web';
 import slackRouter from './slack';
+import webRouter from './web';
 
 const router = Router();
 
