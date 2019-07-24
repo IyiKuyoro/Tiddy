@@ -1,8 +1,8 @@
 import { Router } from 'express';
 
-import slackEvents from '../controllers/SlackEvents';
-import slackInteractions from '../controllers/SlackInteractiveMessage';
-import SlashCommandsControllers from '../controllers/SlashCommands';
+import SlashCommandsControllers from '../../controllers/SlashCommands';
+import slackEvents from './SlackEvents';
+import slackInteractions from './SlackInteractiveMessage';
 
 const slackRouter = Router();
 
