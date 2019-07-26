@@ -10,7 +10,10 @@ CREATE TABLE IF NOT EXISTS watching_channels (
   PRIMARY KEY (workspace_id, channel_id, emoji_text)
 );
 
-CREATE PROCEDURE add_new_watching_channel(channel_id_param VARCHAR (10), team_id_param VARCHAR (80))
+-- Add the installer's user id column to the workspace table
+ALTER TABLE workspace ADD COLUMN installer_user_id VARCHAR (10) NOT NULL;
+
+CREATE PROCEDURE add_new_watching_channel(p1 VARCHAR (10), p2 VARCHAR (80), p3 VARCHAR (50), p4 INTEGER, p5 VARCHAR (10))
 LANGUAGE plpgsql
 AS $$
 -- Declare variable
@@ -25,19 +28,22 @@ BEGIN
   FROM
     workspace
   WHERE
-    team_id = team_id_param;
+    team_id = p2;
 
   -- Add the new watching channel
   INSERT INTO
-    watching_channels (workspace_id, channel_id, created_at, updated_at)
+    watching_channels (workspace_id, channel_id, emoji_text, reaction_limit, tiddy_action, created_at, updated_at)
   VALUES
-    (workspace_serial_id, channel_id_param, clock_timestamp(), clock_timestamp())
+    (workspace_serial_id, p1, p3, p4, p5, clock_timestamp(), clock_timestamp())
   ON CONFLICT (workspace_id, channel_id)
   DO
     UPDATE
       SET
-        channel_id = channel_id_param,
+        channel_id = p1,
         workspace_id = workspace_serial_id,
+        emoji_text = p3,
+        reaction_limit = p4,
+        tiddy_action = p5,
         updated_at = clock_timestamp();
 END;
 $$;

@@ -56,6 +56,7 @@ class WebController {
         response.data.scope,
         response.data.bot.bot_user_id,
         response.data.bot.bot_access_token,
+        response.data.user_id,
       );
 
       res.render('installationSuccess', {

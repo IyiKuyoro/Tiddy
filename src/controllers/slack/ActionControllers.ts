@@ -7,11 +7,19 @@ import { Logger } from '../../helpers/logger';
 import WorkspaceService from '../../services/WorkspaceServices';
 
 export default class ActionControllers {
-  public static async buttonAction(payload: any, respond: (body: object) => {}) {
+  public static async addWatchAction(payload: any, respond: (body: object) => {}) {
     try {
-      const teamInfo = await WorkspaceService.getWorkspaceInfo(payload.team.id)
+      const teamInfo = await WorkspaceService.getWorkspaceInfo(payload.team.id);
 
       const web = new WebClient(teamInfo.access_token);
+
+      if (teamInfo.installer_user_id !== payload.user.id) {
+        respond({
+          text: `:cry: You are not authorized  to add a channel watcher.
+Only <@${teamInfo.installer_user_id}> can do so. In case <@${teamInfo.installer_user_id}> is no longer a member of this workspace, kindly ask the new admin to reinstall the app and add the watcher.`,
+        });
+        return;
+      }
 
       const dialog = buildChannelWatcherDialog();
 
