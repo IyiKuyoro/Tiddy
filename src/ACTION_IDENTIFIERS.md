@@ -4,8 +4,8 @@ This file will contain a list of action identifiers in the application
 
 ## Block IDs
 
-- 001: Greet the user.
-- 002: Action buttons on the greeting message.
+- BLK001: Default welcome message block.
+- BLK002: Action buttons on the welcome message block.
 
 ## Action IDs
 

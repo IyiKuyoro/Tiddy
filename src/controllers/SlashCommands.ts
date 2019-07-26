@@ -9,11 +9,11 @@ export default class SlashCommandsControllers {
     const msgSection = new Section(
       new Text(TextType.plainText, `Hello there :wave: I am always happy to help!
 Here are a few things I can do for you right away. :smile:`, true),
-      '001',
+      'BLK001',
     );
     const actions = new Actions([
       new ButtonElement('Add Channel Watch', 'ACT001')
-    ]);
+    ], 'BLK002');
 
     const message = new InteractiveMessage(
       'Hello there I am always happy to help!'

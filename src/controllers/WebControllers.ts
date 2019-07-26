@@ -50,10 +50,10 @@ class WebController {
       }
 
       await WorkspaceService.addWorkspace(
-        response.data.access_token,
-        response.data.scope,
-        response.data.team_name,
         response.data.team_id,
+        response.data.access_token,
+        response.data.team_name,
+        response.data.scope,
         response.data.bot.bot_user_id,
         response.data.bot.bot_access_token,
       );

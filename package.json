@@ -32,6 +32,7 @@
   "dependencies": {
     "@slack/events-api": "^2.2.0",
     "@slack/interactive-messages": "^1.1.1",
+    "@slack/web-api": "^5.0.1",
     "@types/dotenv": "^6.1.1",
     "@types/express": "^4.16.1",
     "@types/express-handlebars": "0.0.32",
@@ -49,7 +50,7 @@
     "qs": "^6.7.0",
     "r7insight_node": "^1.8.2",
     "reflect-metadata": "^0.1.13",
-    "slack-block-msg-kit": "^0.3.0",
+    "slack-block-msg-kit": "file:../packages/slack-block-msg-kit/slack-block-msg-kit-0.3.0.tgz",
     "typescript": "^3.5.1",
     "winston-loggly-bulk": "^3.0.1"
   },

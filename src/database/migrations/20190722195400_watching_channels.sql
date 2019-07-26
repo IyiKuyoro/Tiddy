@@ -2,9 +2,12 @@ CREATE TABLE IF NOT EXISTS watching_channels (
   id serial UNIQUE NOT NULL,
   workspace_id INTEGER REFERENCES workspace(id),
   channel_id VARCHAR (10) NOT NULL,
+  emoji_text VARCHAR (50) NOT NULL,
+  reaction_limit INTEGER NOT NULL,
+  tiddy_action VARCHAR (10) NOT NULL,
   created_at TIMESTAMPTZ NOT NULL,
   updated_at TIMESTAMPTZ NOT NULL,
-  PRIMARY KEY (workspace_id, channel_id)
+  PRIMARY KEY (workspace_id, channel_id, emoji_text)
 );
 
 CREATE PROCEDURE add_new_watching_channel(channel_id_param VARCHAR (10), team_id_param VARCHAR (80))
@@ -38,3 +41,17 @@ BEGIN
         updated_at = clock_timestamp();
 END;
 $$;
+
+CREATE FUNCTION get_workspace_info(p1 VARCHAR (80)) RETURNS workspace AS $$
+DECLARE
+workspace_info workspace;
+BEGIN
+  -- Get the workspace info
+  SELECT *
+  INTO workspace_info
+  FROM workspace
+  WHERE p1 = workspace.team_id;
+
+  RETURN workspace_info;
+END; $$
+LANGUAGE plpgsql;

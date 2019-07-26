@@ -37,7 +37,16 @@ export default class WorkspaceService {
     }
   }
 
-  public static async getWorkspaceInfo() {
-    
+  public static async getWorkspaceInfo(teamId: string) {
+    const data = await client.query({
+      text: "SELECT * FROM get_workspace_info($1)",
+      values: [teamId],
+    })
+
+    if (data.rows[0].id === null) {
+      throw new Error('This workspace does not exist.');
+    }
+
+    return data.rows[0];
   }
 }
