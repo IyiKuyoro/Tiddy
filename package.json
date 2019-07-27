@@ -50,7 +50,7 @@
     "qs": "^6.7.0",
     "r7insight_node": "^1.8.2",
     "reflect-metadata": "^0.1.13",
-    "slack-block-msg-kit": "file:../packages/slack-block-msg-kit/slack-block-msg-kit-0.3.0.tgz",
+    "slack-block-msg-kit": "^0.4.0",
     "typescript": "^3.5.1",
     "winston-loggly-bulk": "^3.0.1"
   },
