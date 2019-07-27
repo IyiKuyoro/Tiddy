@@ -3,7 +3,9 @@ import { createEventAdapter } from '@slack/events-api';
 import config from '../../config';
 import EventControllers from '../../controllers/slack/EventControllers';
 
-const slackEvents = createEventAdapter(config.SLACK_SIGNING_SECRET);
+const slackEvents = createEventAdapter(config.SLACK_SIGNING_SECRET, {
+  includeBody: true,
+});
 
 // Handle added reactions
 slackEvents.on('reaction_added', EventControllers.reactionAdded);
