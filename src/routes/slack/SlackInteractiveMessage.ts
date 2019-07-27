@@ -8,7 +8,7 @@ import WorkspaceService from '../../services/WorkspaceServices';
 const slackInteractions = createMessageAdapter(config.SLACK_SIGNING_SECRET);
 
 // Handle add action button clicks
-slackInteractions.action({type: 'button'}, async (payload: any, respond: any) => {
+slackInteractions.action({actionId: 'ACT001'}, async (payload: any, respond: any) => {
   // Array of slack handlers
   const funcs = [ActionControllers.validateUser, ActionControllers.displayAddWatcherDialog];
 
@@ -25,6 +25,13 @@ slackInteractions.action({type: 'button'}, async (payload: any, respond: any) =>
 
   // Call the first function
   await funcs[0](data, payload, respond);
+});
+
+// Handle cancel button action
+slackInteractions.action({actionId: 'ACT002'}, (payload: any, respond: any) => {
+  respond({
+    text: 'Thanks!'
+  });
 });
 
 export default slackInteractions;
