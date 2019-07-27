@@ -4,9 +4,14 @@ This file will contain a list of action identifiers in the application
 
 ## Block IDs
 
-- 001: Greet the user.
-- 002: Action buttons on the greeting message.
+- BLK001: Default welcome message block.
+- BLK002: Action buttons on the welcome message block.
 
 ## Action IDs
 
 - AC001: Add a Channel Watcher
+- AC002: Cancel the welcome message
+
+## Callback IDs
+
+- CLB001: Add a watcher dialog submission
