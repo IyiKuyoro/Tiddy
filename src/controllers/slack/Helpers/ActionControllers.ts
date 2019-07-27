@@ -3,7 +3,7 @@ import DialogSelectElement, { DialogSelectDataSource } from 'slack-block-msg-kit
 import DialogSelectOption from 'slack-block-msg-kit/FeatureElements/DialogSelectOption';
 import DialogTextElement, { DialogTextSubTypes } from 'slack-block-msg-kit/FeatureElements/DialogTextElement';
 
-export const buildChannelWatcherDialog = () => {
+export const buildChannelWatcherDialog = (state: {responseUrl: string}) => {
   // Generate channel select input
   const channelSelect = new DialogSelectElement('Select a channel:', 'watch_channel');
   channelSelect
@@ -40,6 +40,8 @@ export const buildChannelWatcherDialog = () => {
     reactionLimit,
     action,
   ]);
+  const stateString = JSON.stringify(state);
+  dialog.addState(stateString);
 
   return dialog;
 }
