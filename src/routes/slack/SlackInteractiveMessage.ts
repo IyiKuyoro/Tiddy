@@ -27,6 +27,9 @@ slackInteractions.action({actionId: 'ACT001'}, async (payload: any, respond: any
   await funcs[0](data, payload, respond);
 });
 
+// Handle add watcher dialog submission
+slackInteractions.action({type: 'dialog_submission', callbackId: 'CLB001'}, ActionControllers.addWatcher);
+
 // Handle cancel button action
 slackInteractions.action({actionId: 'ACT002'}, (payload: any, respond: any) => {
   respond({

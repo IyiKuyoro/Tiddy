@@ -1,5 +1,7 @@
 import { callNextFunc } from '../../helpers';
 import { Logger } from '../../helpers/logger';
+import WatcherServices from '../../services/WatcherServices';
+import WorkspaceService from '../../services/WorkspaceServices';
 import { buildChannelWatcherDialog } from './Helpers/ActionControllers';
 
 export default class ActionControllers {
@@ -51,6 +53,43 @@ export default class ActionControllers {
       respond({
         text: ':interrobang: I am sorry I hit an error with that last request. I have logged that for my maintainers. Please feel free to try again.'
       });
+    }
+  }
+
+  /**
+   * @description Ensure the watcher has not been added already
+   * @param  {any} data Metadata
+   * @param  {any} payload The slack payload sent
+   * @param  {any} respond The respond object
+   */
+  public static async addWatcher(payload: any, respond: any) {
+    try {
+      const data = {...payload.submission};
+      const teamInfo = await WorkspaceService.getWorkspaceInfo(payload.team.id);
+      const watcher = await WatcherServices.getWatcher(
+        data.watch_channel,
+        teamInfo.id,
+        data.emoji_text,
+      );
+
+      if (watcher) {
+        return {
+          errors: [
+            {
+              error: "This reaction is already being watched in the above channel",
+              name: "emoji_text",
+            },
+            {
+              error: "Already watching for the below reaction in this channel",
+              name: "watch_channel",
+            },
+          ]
+        };
+      }
+
+      await WatcherServices.addWatcher(data.watch_channel, data.emoji_text, data.reaction_limit, data.tiddy_action, payload.team.id)
+    }catch (error) {
+      Logger.error(error);
     }
   }
 }

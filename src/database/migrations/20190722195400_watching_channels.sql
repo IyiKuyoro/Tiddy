@@ -34,17 +34,7 @@ BEGIN
   INSERT INTO
     watching_channels (workspace_id, channel_id, emoji_text, reaction_limit, tiddy_action, created_at, updated_at)
   VALUES
-    (workspace_serial_id, p1, p3, p4, p5, clock_timestamp(), clock_timestamp())
-  ON CONFLICT (workspace_id, channel_id)
-  DO
-    UPDATE
-      SET
-        channel_id = p1,
-        workspace_id = workspace_serial_id,
-        emoji_text = p3,
-        reaction_limit = p4,
-        tiddy_action = p5,
-        updated_at = clock_timestamp();
+    (workspace_serial_id, p1, p3, p4, p5, clock_timestamp(), clock_timestamp());
 END;
 $$;
 
