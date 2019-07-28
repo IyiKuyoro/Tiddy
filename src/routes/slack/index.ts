@@ -7,10 +7,7 @@ import slackInteractions from './SlackInteractiveMessage';
 const slackRouter = Router();
 
 // Receive slack commands
-slackRouter.post(
-  '/commands',
-  SlashCommandsControllers.defaultCommand,
-);
+slackRouter.post('/commands', SlashCommandsControllers.defaultCommand);
 
 // Receive slack events
 slackRouter.use('/events', slackEvents.expressMiddleware());

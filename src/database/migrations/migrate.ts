@@ -60,29 +60,33 @@ const successfulMigration = async (files: string[], index: number, nextMigration
 // Execute the sql query in the file
 const executeSQL = (files: string[], index: number, next: any) => {
   // Read the contents of the file
-  fs.readFile(`${process.cwd()}/src/database/migrations/${files[index]}`, 'utf8', async (error: Error, query: string) => {
-    try {
-      if (error) {
-        throw error;
-      }
-
-      const fileName = files[index].replace(/.[a-z]+$/, '');
-      if (migratedFiles.indexOf(fileName) < 0) {
-        // Run the migrations
-        const res = await client.query(query);
-
-        if (res) {
-          await successfulMigration(files, index, next);
+  fs.readFile(
+    `${process.cwd()}/src/database/migrations/${files[index]}`,
+    'utf8',
+    async (error: Error, query: string) => {
+      try {
+        if (error) {
+          throw error;
         }
-      } else {
-        // If no migrations were found
-        Logger.info('\nMigrations are up to date!\n');
-        closeConnection();
+
+        const fileName = files[index].replace(/.[a-z]+$/, '');
+        if (migratedFiles.indexOf(fileName) < 0) {
+          // Run the migrations
+          const res = await client.query(query);
+
+          if (res) {
+            await successfulMigration(files, index, next);
+          }
+        } else {
+          // If no migrations were found
+          Logger.info('\nMigrations are up to date!\n');
+          closeConnection();
+        }
+      } catch (error) {
+        handleErrors(error);
       }
-    } catch (error) {
-      handleErrors(error);
-    }
-  });
+    },
+  );
 };
 
 // Run new migrations
@@ -130,7 +134,6 @@ const getPastMigrations = async () => {
     handleErrors(error);
   }
 };
-
 
 // Create the migration meta table
 client

@@ -23,6 +23,6 @@ export default class MessageReactionCountService {
     return client.query({
       text: 'DELETE FROM message_reaction_counts WHERE watching_channels_id=$1 AND message_timestamp=$2;',
       values: [watcherId, messageTimeStamp],
-    })
+    });
   }
 }
