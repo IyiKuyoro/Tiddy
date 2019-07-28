@@ -10,7 +10,7 @@ export default class EventControllers {
     try {
       // Verify that that channel has been added for watch
       const teamInfo = await WorkspaceService.getWorkspaceInfo(body.team_id);
-      const watcher = await WatcherServices.getWatcher(event.item.channel, teamInfo.id, event.reaction);
+      const watcher = await WatcherServices.getWatcherByWorkspaceID(teamInfo.team_id, event.item.channel, event.reaction);
 
       if (watcher) {
         await MessageReactionCountService.addReactionCount(event.item.ts, watcher.id);

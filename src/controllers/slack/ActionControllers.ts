@@ -57,8 +57,7 @@ export default class ActionControllers {
   public static async addWatcher(payload: any, respond: any) {
     try {
       const data = { ...payload.submission };
-      const teamInfo = await WorkspaceService.getWorkspaceInfo(payload.team.id);
-      const watcher = await WatcherServices.getWatcher(data.watch_channel, teamInfo.id, data.emoji_text);
+      const watcher = await WatcherServices.getWatcherByWorkspaceID(payload.team.id, data.watch_channel, data.emoji_text);
 
       if (watcher) {
         return {

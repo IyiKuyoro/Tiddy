@@ -57,7 +57,6 @@
     "@types/node-cron": "^2.0.2",
     "@types/pg": "^7.4.14",
     "@types/qs": "^6.5.3",
-    "@types/redis": "^2.8.13",
     "jest": "^24.8.0",
     "nodemon": "^1.19.1",
     "prettier": "^1.17.1",

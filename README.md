@@ -10,6 +10,7 @@ This project is built with the following languages and technologies
 - **NodeJs**: The runtime engine used in building the application
 - **Express**: The is the library used in handling all http requests to the server.
 - **PostgreSQL**: The (ORDBMS) used for data storage
+- **Redis**: The caching engin used
 - **Handlebars**: This is the library used in rendering some dynamic content on the view.
 
 ## Contributors
