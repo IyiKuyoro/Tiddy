@@ -1,6 +1,18 @@
+import RedisClient from '../config/RedisConfig';
 import client from '../database/client';
+import IWorkspace from '../database/models/IWorkspace';
 
 export default class WorkspaceService {
+  /**
+   * @description Add a new workspace
+   * @param  {string} teamId The team id of the workspace
+   * @param  {string} accessToken The access token of the team
+   * @param  {string} teamName The team name
+   * @param  {string} scope The bot permission scope
+   * @param  {string} botUserId The bot user token
+   * @param  {string} botAccessToken The bot access token
+   * @param  {string} installerId The installer id
+   */
   public static async addWorkspace(
     teamId: string,
     accessToken: string,
@@ -26,24 +38,43 @@ export default class WorkspaceService {
             updated_at = $8,
             installer_user_id = $9`;
 
-    const newRecord = await client.query({
+    await client.query({
       text,
       values: [teamId, accessToken, scope, teamName, botUserId, botAccessToken, new Date(), new Date(), installerId],
     });
 
-    return newRecord;
+    RedisClient.DEL(`Tiddy_Workspace:${teamId}`);
+
+    return;
   }
 
-  public static async getWorkspaceInfo(teamId: string) {
-    const data = await client.query({
-      text: "SELECT * FROM get_workspace_info($1)",
-      values: [teamId],
-    })
+  /**
+   * @description Get thew workspace information
+   * @param  {string} teamId The team id
+   * @returns Promise<IWorkspace> The workspace info
+   */
+  public static async getWorkspaceInfo(teamId: string): Promise<IWorkspace> {
+    let result: IWorkspace;
+    const redisKey = `Tiddy_Workspace:${teamId}`;
 
-    if (data.rows[0].id === null) {
-      throw new Error('This workspace does not exist.');
+    const redisData = await RedisClient.getAsync(redisKey);
+    if (redisData) {
+      result = JSON.parse(redisData);
+    } else {
+      const data = await client.query({
+        text: 'SELECT * FROM get_workspace_info($1)',
+        values: [teamId],
+      });
+
+      if (data.rows[0].id === null) {
+        throw new Error('This workspace does not exist.');
+      }
+
+      await RedisClient.set(redisKey, JSON.stringify(data.rows[0]));
+
+      result = data.rows[0];
     }
 
-    return data.rows[0];
+    return result;
   }
 }

@@ -3,12 +3,10 @@ import DialogSelectElement, { DialogSelectDataSource } from 'slack-block-msg-kit
 import DialogSelectOption from 'slack-block-msg-kit/FeatureElements/DialogSelectOption';
 import DialogTextElement, { DialogTextSubTypes } from 'slack-block-msg-kit/FeatureElements/DialogTextElement';
 
-export const buildChannelWatcherDialog = (state: {responseUrl: string}) => {
+export const buildChannelWatcherDialog = (state: { responseUrl: string }) => {
   // Generate channel select input
   const channelSelect = new DialogSelectElement('Select a channel:', 'watch_channel');
-  channelSelect
-    .changeDataSource(DialogSelectDataSource.channels)
-    .addPlaceholder('Select a channel to watch');
+  channelSelect.changeDataSource(DialogSelectDataSource.channels).addPlaceholder('Select a channel to watch');
 
   // Generate emoji text input
   const emojiText = new DialogTextElement('Reaction:', 'emoji_text');
@@ -27,21 +25,12 @@ export const buildChannelWatcherDialog = (state: {responseUrl: string}) => {
 
   // Generate action input
   const action = new DialogSelectElement('Action:', 'tiddy_action');
-  action
-    .addOptions([
-      new DialogSelectOption('Delete', 'delete'),
-    ])
-    .addPlaceholder('Select an action');
+  action.addOptions([new DialogSelectOption('Delete', 'delete')]).addPlaceholder('Select an action');
 
   // Generate the dialog
-  const dialog = new Dialog('Add a Channel Watcher', 'CLB001', [
-    channelSelect,
-    emojiText,
-    reactionLimit,
-    action,
-  ]);
+  const dialog = new Dialog('Add a Channel Watcher', 'CLB001', [channelSelect, emojiText, reactionLimit, action]);
   const stateString = JSON.stringify(state);
   dialog.addState(stateString);
 
   return dialog;
-}
+};

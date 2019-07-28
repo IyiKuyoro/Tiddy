@@ -22,14 +22,16 @@ export default class ActionControllers {
       if (teamInfo.installer_user_id !== payload.user.id) {
         respond({
           text: `:cry: You are not authorized  to add a channel watcher.
-  Only <@${teamInfo.installer_user_id}> can do so. In case <@${teamInfo.installer_user_id}> is no longer a member of this workspace, kindly ask the new admin to reinstall the app and add the watcher.`,
+  Only <@${teamInfo.installer_user_id}> can do so. In case <@${
+            teamInfo.installer_user_id
+          }> is no longer a member of this workspace, kindly ask the new admin to reinstall the app and add the watcher.`,
         });
 
         return;
       }
 
       const dialog = buildChannelWatcherDialog({
-        responseUrl: payload.response_url
+        responseUrl: payload.response_url,
       });
 
       // Open the add watcher dialog on slack
@@ -40,7 +42,8 @@ export default class ActionControllers {
     } catch (error) {
       Logger.error(error);
       respond({
-        text: ':interrobang: I am sorry I hit an error with that last request. I have logged that for my maintainers. Please feel free to try again.'
+        text:
+          ':interrobang: I am sorry I hit an error with that last request. I have logged that for my maintainers. Please feel free to try again.',
       });
     }
   }
@@ -53,38 +56,43 @@ export default class ActionControllers {
    */
   public static async addWatcher(payload: any, respond: any) {
     try {
-      const data = {...payload.submission};
-      const teamInfo = await WorkspaceService.getWorkspaceInfo(payload.team.id);
-      const watcher = await WatcherServices.getWatcher(
+      const data = { ...payload.submission };
+      const watcher = await WatcherServices.getWatcherByWorkspaceID(
+        payload.team.id,
         data.watch_channel,
-        teamInfo.id,
         data.emoji_text,
       );
 
-      if (watcher) {
+      if (watcher.id !== null) {
         return {
           errors: [
             {
-              error: "This reaction is already being watched in the above channel",
-              name: "emoji_text",
+              error: 'This reaction is already being watched in the above channel',
+              name: 'emoji_text',
             },
             {
-              error: "Already watching for the below reaction in this channel",
-              name: "watch_channel",
+              error: 'Already watching for the below reaction in this channel',
+              name: 'watch_channel',
             },
-          ]
+          ],
         };
       }
 
-      await WatcherServices.addWatcher(data.watch_channel, data.emoji_text, data.reaction_limit, data.tiddy_action, payload.team.id);
+      await WatcherServices.addWatcher(
+        data.watch_channel,
+        data.emoji_text,
+        data.reaction_limit,
+        data.tiddy_action,
+        payload.team.id,
+      );
 
       const state = JSON.parse(payload.state);
       await axios.post(state.responseUrl, {
         replace_original: true,
         response_type: 'ephemeral',
         text: `Ok! I will begin watching <#${data.watch_channel}> for the :${data.emoji_text}: reaction.`,
-      })
-    }catch (error) {
+      });
+    } catch (error) {
       Logger.error(error);
     }
   }

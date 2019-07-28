@@ -2,11 +2,14 @@
   "cSpell.words": [
     "Interop",
     "Loggly",
+    "REDISCLOUD",
     "Tiddy",
     "datepicker",
     "exphbs",
+    "flushdb",
     "interrobang",
-    "mrkdwn"
+    "mrkdwn",
+    "prebuild"
   ],
   "workbench.colorCustomizations": {
     "statusBar.background": "#06bb00",
