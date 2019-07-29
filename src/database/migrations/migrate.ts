@@ -12,6 +12,7 @@ const client = new Client({
   host: config.DATABASE_HOST,
   password: config.DATABASE_PASSWORD,
   port: 5432,
+  ssl: config.ENV === 'production' ? true : false,
   user: config.DATABASE_USERNAME,
 });
 

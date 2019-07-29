@@ -4,11 +4,11 @@
   "description": "Tiddy is a nice slack app that helps keep your workspace clean by moving messages to the appropriate channel",
   "main": "./dist/index.js",
   "scripts": {
-    "build": "npm run format && tsc",
+    "build": "tsc",
     "cev": "chmod u+x ./scripts/cev.sh && ./scripts/cev.sh",
     "dev": "nodemon",
     "format": "npm run lint && prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
-    "heroku-prebuild": "npm run setup",
+    "heroku-prebuild": "chmod u+x ./scripts/heroku-prebuild.sh && ./scripts/heroku-prebuild.sh",
     "lint": "tslint -p tsconfig.json",
     "mat": "chmod u+x ./scripts/mat.sh && ./scripts/mat.sh",
     "migrate": "node bin/migrate",
