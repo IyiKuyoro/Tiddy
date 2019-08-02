@@ -9,8 +9,9 @@ This file will contain a list of action identifiers in the application
 
 ## Action IDs
 
-- AC001: Add a Channel Watcher
+- AC001: Add a channel watcher
 - AC002: Cancel the welcome message
+- ACT003: Remove a channel watcher
 
 ## Callback IDs
 
