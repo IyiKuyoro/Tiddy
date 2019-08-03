@@ -21,7 +21,7 @@ Here are a few things I can do for you right away. :smile:`,
   const actions = new Actions([addWatcher, rmvWatcher, cancelBtn], 'BLK002');
 
   const message = new InteractiveMessage('Hello there I am always happy to help!');
-    message.addBlock(msgSection).addBlock(actions);
+  message.addBlock(msgSection).addBlock(actions);
 
   return message;
 };

@@ -4,12 +4,12 @@ import axios from 'axios';
 import { Logger } from '../../helpers/logger';
 import WatcherServices from '../../services/WatcherServices';
 import WorkspaceService from '../../services/WorkspaceServices';
-import { buildChannelWatcherDialog } from './Helpers/ActionControllers';
+import { buildChannelWatcherDialog, generateRemoveWatcherMessage } from './Helpers/ActionControllers';
+import { buildWelcomeMessage } from './Helpers/SlashCommands';
 
 export default class ActionControllers {
   /**
-   * @description validate that the user is the admin
-   * @param  {any} data Metadata
+   * @description Display added watcher
    * @param  {any} payload The slack payload sent
    * @param  {any} respond The respond object
    */
@@ -49,12 +49,10 @@ export default class ActionControllers {
   }
 
   /**
-   * @description Ensure the watcher has not been added already
-   * @param  {any} data Metadata
+   * @description Add a new watcher to the channel
    * @param  {any} payload The slack payload sent
-   * @param  {any} respond The respond object
    */
-  public static async addWatcher(payload: any, respond: any) {
+  public static async addWatcher(payload: any) {
     try {
       const data = { ...payload.submission };
       const watcher = await WatcherServices.getWatcherByWorkspaceID(
@@ -94,6 +92,41 @@ export default class ActionControllers {
       });
     } catch (error) {
       Logger.error(error);
+    }
+  }
+
+  /**
+   * @description Display message to remove a watcher
+   * @param  {any} payload The slack payload sent
+   * @param  {any} respond The respond function
+   */
+  public static async displayRemoveWatcherMessage(payload: any, respond: any) {
+    try {
+      const teamInfo = await WorkspaceService.getWorkspaceInfo(payload.team.id);
+      const web = new WebClient(teamInfo.access_token);
+
+      const watchers = await WatcherServices.getAllWatchers(teamInfo.id, teamInfo.team_id);
+
+      const message = generateRemoveWatcherMessage(watchers);
+
+      respond(message);
+    } catch (error) {
+      respond({
+        text:
+          ':interrobang: I am sorry I was unable to process that action. I have notified my maintainer, but please feel free to give it another go.',
+      });
+    }
+  }
+
+  public static displayWelcomeMessage(payload: any, respond: any) {
+    try {
+      const message = buildWelcomeMessage();
+
+      respond(message);
+    } catch (error) {
+      respond({
+        text: ':interrobang: I am sorry I was unable to process that action.',
+      });
     }
   }
 }

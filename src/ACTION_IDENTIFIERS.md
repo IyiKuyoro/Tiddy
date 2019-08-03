@@ -11,7 +11,9 @@ This file will contain a list of action identifiers in the application
 
 - AC001: Add a channel watcher
 - AC002: Cancel the welcome message
-- ACT003: Remove a channel watcher
+- ACT003: Remove a channel watcher action trigger
+- ACT004: Remove channel watcher channel watcher option select
+- ACT005: Go back from the remove watcher selection message
 
 ## Callback IDs
 

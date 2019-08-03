@@ -61,4 +61,32 @@ export default class WatcherServices {
 
     return result;
   }
+
+  /**
+   * @description Get all the reaction watchers from the database
+   * @param  {string} teamSerialId The workspace id
+   * @param  {number} teamId The workspace record serial number
+   * @returns Promise
+   */
+  public static async getAllWatchers(teamSerialId: number, teamId: string): Promise<IWatcher[]> {
+    let results: IWatcher[];
+    const redisKey = `Tiddy_watchers:${teamId}`;
+
+    const redisData = await RedisClient.getAsync(redisKey);
+
+    if (redisData) {
+      results = JSON.parse(redisData);
+    } else {
+      const data = await client.query({
+        text: 'SELECT * FROM watching_channels WHERE workspace_id = $1',
+        values: [teamSerialId],
+      });
+
+      await RedisClient.set(redisKey, JSON.stringify(data.rows));
+      await RedisClient.DEL(`Tiddy_watchers:${teamId}`);
+      results = data.rows;
+    }
+
+    return results;
+  }
 }
