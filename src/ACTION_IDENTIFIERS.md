@@ -6,6 +6,8 @@ This file will contain a list of action identifiers in the application
 
 - BLK001: Default welcome message block.
 - BLK002: Action buttons on the welcome message block.
+- BLK003: Remove watcher section block.
+- BLK004: Action buttons for removing watcher.
 
 ## Action IDs
 

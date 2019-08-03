@@ -73,7 +73,7 @@ export const generateRemoveWatcherMessage = (watchers: IWatcher[]) => {
   watcherOptions.addOptionGroups(watchersOptionGroups);
 
   // Add the static options to the action
-  const actions = new Actions([backButton, watcherOptions, cancelBtn]);
+  const actions = new Actions([backButton, watcherOptions, cancelBtn], 'BLK004');
 
   // Generate the interactive message
   const msg = new InteractiveMessage('Watcher removed.', true, [section, actions]);
@@ -87,11 +87,25 @@ const groupWatchers = (watchers: IWatcher[]): OptionGroup[] => {
   watchers.forEach((watcher: IWatcher) => {
     if (groupedWatcher[watcher.channel_id]) {
       groupedWatcher[watcher.channel_id].push(
-        new Option(`:${watcher.emoji_text}: / ${watcher.tiddy_action}`, `${watcher.id}`),
+        new Option(
+          `:${watcher.emoji_text}: / ${watcher.tiddy_action}`,
+          JSON.stringify({
+            channelId: watcher.channel_id,
+            emojiText: watcher.emoji_text,
+            watcherId: watcher.id,
+          }),
+        ),
       );
     } else {
       groupedWatcher[watcher.channel_id] = [
-        new Option(`:${watcher.emoji_text}: / ${watcher.tiddy_action}`, `${watcher.id}`),
+        new Option(
+          `:${watcher.emoji_text}: / ${watcher.tiddy_action}`,
+          JSON.stringify({
+            channelId: watcher.channel_id,
+            emojiText: watcher.emoji_text,
+            watcherId: watcher.id,
+          }),
+        ),
       ];
     }
   });

@@ -89,4 +89,15 @@ export default class WatcherServices {
 
     return results;
   }
+
+  public static async removeAllWatchers(watcherId: number, channelId: string, emojiText: string, workspaceId: string) {
+    const redisKey = `Tiddy_watcher:${channelId}-${workspaceId}-${emojiText}`;
+
+    await RedisClient.DEL(redisKey);
+
+    await client.query({
+      text: 'CALL remove_watcher_procedure($1)',
+      values: [watcherId],
+    });
+  }
 }

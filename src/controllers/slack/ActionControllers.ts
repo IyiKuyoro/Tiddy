@@ -103,7 +103,6 @@ export default class ActionControllers {
   public static async displayRemoveWatcherMessage(payload: any, respond: any) {
     try {
       const teamInfo = await WorkspaceService.getWorkspaceInfo(payload.team.id);
-      const web = new WebClient(teamInfo.access_token);
 
       const watchers = await WatcherServices.getAllWatchers(teamInfo.id, teamInfo.team_id);
 
@@ -118,6 +117,11 @@ export default class ActionControllers {
     }
   }
 
+  /**
+   * @description Display the original welcome message
+   * @param  {any} payload The slack payload sent
+   * @param  {any} respond The respond function
+   */
   public static displayWelcomeMessage(payload: any, respond: any) {
     try {
       const message = buildWelcomeMessage();
@@ -126,6 +130,33 @@ export default class ActionControllers {
     } catch (error) {
       respond({
         text: ':interrobang: I am sorry I was unable to process that action.',
+      });
+    }
+  }
+
+  /**
+   * @description Display the original welcome message
+   * @param  {any} payload The slack payload sent
+   * @param  {any} respond The respond function
+   */
+  public static async removeWatcher(payload: any, respond: any) {
+    try {
+      const selected = JSON.parse(payload.actions[0].selected_option.value);
+
+      await WatcherServices.removeAllWatchers(
+        selected.watcherId,
+        selected.channelId,
+        selected.emojiText,
+        payload.team.id,
+      );
+
+      respond({
+        text: 'Got it!',
+      });
+    } catch (error) {
+      respond({
+        text:
+          ':interrobang: I am sorry I was unable to process that action. I have notified my maintainer, but please feel free to give it another go.',
       });
     }
   }
