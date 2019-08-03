@@ -6,11 +6,16 @@ This file will contain a list of action identifiers in the application
 
 - BLK001: Default welcome message block.
 - BLK002: Action buttons on the welcome message block.
+- BLK003: Remove watcher section block.
+- BLK004: Action buttons for removing watcher.
 
 ## Action IDs
 
-- AC001: Add a Channel Watcher
+- AC001: Add a channel watcher
 - AC002: Cancel the welcome message
+- ACT003: Remove a channel watcher action trigger
+- ACT004: Remove channel watcher channel watcher option select
+- ACT005: Go back from the remove watcher selection message
 
 ## Callback IDs
 

@@ -18,4 +18,13 @@ slackInteractions.action({ actionId: 'ACT002' }, (payload: any, respond: any) =>
   });
 });
 
+// Handle remove watcher action
+slackInteractions.action({ actionId: 'ACT003' }, ActionControllers.displayRemoveWatcherMessage);
+
+// Remove a watcher selection action
+slackInteractions.action({ actionId: 'ACT004' }, ActionControllers.removeWatcher);
+
+// Handle back button from add watcher selection message
+slackInteractions.action({ actionId: 'ACT005' }, ActionControllers.displayWelcomeMessage);
+
 export default slackInteractions;

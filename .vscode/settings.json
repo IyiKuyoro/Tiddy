@@ -12,11 +12,17 @@
     "prebuild"
   ],
   "workbench.colorCustomizations": {
-    "statusBar.background": "#06bb00",
-    "activityBar.background": "#06bb00",
-    "titleBar.activeBackground": "#06bb00",
-    "titleBar.inactiveBackground": "#06bb0099",
+    "activityBar.background": "#05bb00",
+    "activityBar.foreground": "#e7e7e7",
+    "activityBar.inactiveForeground": "#e7e7e799",
+    "activityBarBadge.background": "#dfe0ff",
+    "activityBarBadge.foreground": "#15202b",
+    "titleBar.activeBackground": "#048800",
+    "titleBar.inactiveBackground": "#04880099",
     "titleBar.activeForeground": "#e7e7e7",
-    "titleBar.inactiveForeground": "#e7e7e799"
+    "titleBar.inactiveForeground": "#e7e7e799",
+    "statusBar.background": "#048800",
+    "statusBarItem.hoverBackground": "#05bb00",
+    "statusBar.foreground": "#e7e7e7"
   }
 }
