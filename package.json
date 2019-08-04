@@ -4,17 +4,17 @@
   "description": "Tiddy is a nice slack app that helps keep your workspace clean by moving messages to the appropriate channel",
   "main": "./dist/index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && NODE_ENV=production npm run migrate",
     "cev": "chmod u+x ./scripts/cev.sh && ./scripts/cev.sh",
     "dev": "nodemon",
     "format": "npm run lint && prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
-    "heroku-prebuild": "chmod u+x ./scripts/heroku-prebuild.sh && ./scripts/heroku-prebuild.sh",
+    "heroku-prebuild": "NODE_ENV=production npm run setup",
     "lint": "tslint -p tsconfig.json",
     "mat": "chmod u+x ./scripts/mat.sh && ./scripts/mat.sh",
     "migrate": "node bin/migrate",
     "un-migrate": "node bin/unMigrate",
     "setup": "npm i && chmod u+x ./scripts/setup.sh && ./scripts/setup.sh",
-    "start": "NODE_ENV=production node .",
+    "start": "NODE_ENV=production node ./bin/prod",
     "test": "jest"
   },
   "repository": {
@@ -45,8 +45,7 @@
     "qs": "^6.7.0",
     "redis": "^2.8.0",
     "slack-block-msg-kit": "^0.4.0",
-    "winston-loggly-bulk": "^3.0.1",
-    "ts-node-register": "^1.0.0"
+    "winston-loggly-bulk": "^3.0.1"
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.27",
@@ -65,6 +64,7 @@
     "ts-jest": "^24.0.2",
     "tslint": "^5.17.0",
     "tslint-config-prettier": "^1.18.0",
+    "ts-node-register": "^1.0.0",
     "typescript": "^3.5.1"
   },
   "nodemonConfig": {
