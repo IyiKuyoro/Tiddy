@@ -7,12 +7,14 @@ import { Logger } from '../../helpers/logger';
 
 const readdir = util.promisify(fs.readdir);
 
+const ssl = config.ENV === 'production' ? true : false;
+
 const client = new Client({
   database: config.DATABASE,
   host: config.DATABASE_HOST,
   password: config.DATABASE_PASSWORD,
   port: 5432,
-  ssl: config.ENV === 'production' ? true : false,
+  ssl,
   user: config.DATABASE_USERNAME,
 });
 
@@ -70,7 +72,7 @@ const executeSQL = (files: string[], index: number, next: any) => {
           throw error;
         }
 
-        const fileName = files[index].replace(/.[a-z]+$/, '');
+        const fileName = files[index];
         if (migratedFiles.indexOf(fileName) < 0) {
           // Run the migrations
           const res = await client.query(query);
@@ -99,14 +101,20 @@ const runMigrations = async () => {
     // Extract only sql files
     const filteredFiles = files.filter((value: string) => /.sql$/.test(value));
 
+    // Get new files to migrate
+    const newMigrations = filteredFiles.filter(value =>  {
+      const fileName = value.replace(/.[a-z]+$/, '');
+      return -1 === migratedFiles.indexOf(fileName);
+    });
+
     // If there are no sql files to run, tell the user
-    if (filteredFiles.length <= 0) {
+    if (newMigrations.length <= 0) {
       Logger.info('There are no migrations to run.');
       closeConnection();
     }
 
     // Execute the sql query in the first file and recurs if there are more files to run
-    executeSQL(filteredFiles, 0, executeSQL);
+    executeSQL(newMigrations, 0, executeSQL);
   } catch (error) {
     handleErrors(error);
   }

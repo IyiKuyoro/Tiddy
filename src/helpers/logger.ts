@@ -15,6 +15,7 @@ winston.add(
 export class Logger {
   public static info(msg: string): void {
     if (config.ENV === 'production') {
+      console.log(msg);
       winston.log('info', msg);
     } else {
       // tslint:disable-next-line:no-console
@@ -24,6 +25,7 @@ export class Logger {
 
   public static error(error: Error): void {
     if (config.ENV === 'production') {
+      console.log(error);
       winston.log('error', error.message, error);
     } else {
       // tslint:disable-next-line:no-console
