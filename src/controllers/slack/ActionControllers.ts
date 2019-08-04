@@ -110,6 +110,7 @@ export default class ActionControllers {
 
       respond(message);
     } catch (error) {
+      Logger.error(error);
       respond({
         text:
           ':interrobang: I am sorry I was unable to process that action. I have notified my maintainer, but please feel free to give it another go.',
@@ -128,6 +129,7 @@ export default class ActionControllers {
 
       respond(message);
     } catch (error) {
+      Logger.error(error);
       respond({
         text: ':interrobang: I am sorry I was unable to process that action.',
       });
@@ -154,6 +156,7 @@ export default class ActionControllers {
         text: 'Got it!',
       });
     } catch (error) {
+      Logger.error(error);
       respond({
         text:
           ':interrobang: I am sorry I was unable to process that action. I have notified my maintainer, but please feel free to give it another go.',
