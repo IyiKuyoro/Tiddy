@@ -18,13 +18,23 @@ export default class WatcherServices {
     limit: number,
     action: string,
     teamId: string,
+    moveChannelId?: string,
   ): Promise<void> {
-    const query = 'CALL add_new_watching_channel($1, $2, $3, $4, $5)';
+    if (!moveChannelId) {
+      const query = 'CALL add_new_watching_channel($1, $2, $3, $4, $5)';
 
-    await client.query({
-      text: query,
-      values: [channelId, teamId, emojiText, limit, action],
-    });
+      await client.query({
+        text: query,
+        values: [channelId, teamId, emojiText, limit, action],
+      });
+    } else {
+      const query = 'CALL add_new_move_watcher($1, $2, $3, $4, $5, $6)';
+
+      await client.query({
+        text: query,
+        values: [channelId, moveChannelId, teamId, emojiText, limit, action,],
+      });
+    }
 
     RedisClient.DEL(`Tiddy_watcher:${channelId}-${teamId}-${emojiText}`);
   }

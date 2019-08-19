@@ -27,4 +27,7 @@ slackInteractions.action({ actionId: 'ACT004' }, ActionControllers.removeWatcher
 // Handle back button from add watcher selection message
 slackInteractions.action({ actionId: 'ACT005' }, ActionControllers.displayWelcomeMessage);
 
+// Handle add move message action
+slackInteractions.action({ actionId: /^ACT006.*/ }, ActionControllers.addMoveWatcher);
+
 export default slackInteractions;
