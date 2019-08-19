@@ -88,9 +88,17 @@ export const generateRemoveWatcherMessage = (watchers: IWatcher[]) => {
 /**
  * @description Generate the message that is used to select the channel to move messages to
  */
-export const generateMoveToChannelMessage = (channelId: string, limit: number, reaction: string): InteractiveMessage => {
+export const generateMoveToChannelMessage = (
+  channelId: string,
+  limit: number,
+  reaction: string,
+): InteractiveMessage => {
   const msgSection = new Section(
-    new Text(TextType.plainText, `What channel would you like to move messages that have gotten ${limit} :${reaction}: reaction(s) to`, true),
+    new Text(
+      TextType.plainText,
+      `What channel would you like to move messages that have gotten ${limit} :${reaction}: reaction(s) to`,
+      true,
+    ),
     'BLK005',
   );
 
@@ -101,27 +109,25 @@ export const generateMoveToChannelMessage = (channelId: string, limit: number, r
       limit,
       reaction,
     })}`,
-    'Select channel to receive message'
+    'Select channel to receive message',
   );
 
   const actions = new Actions([channelList]);
 
   const msg = new InteractiveMessage('Select channel to move messages to.');
-  msg
-    .addBlock(msgSection)
-    .addBlock(actions);
+  msg.addBlock(msgSection).addBlock(actions);
 
-  return msg
-}
+  return msg;
+};
 
 /**
  * @description Get the watcher info from the action id string
  */
-export const getWatcherInfo = (actionId: string): { limit: number, reaction: string, channelId: string } => {
-  const [ _, watcherInfo ] = actionId.split('/');
+export const getWatcherInfo = (actionId: string): { limit: number; reaction: string; channelId: string } => {
+  const [_, watcherInfo] = actionId.split('/');
 
   return JSON.parse(watcherInfo);
-}
+};
 
 const groupWatchers = (watchers: IWatcher[]): OptionGroup[] => {
   const groupedWatcher: { [channelId: string]: Option[] } = {};

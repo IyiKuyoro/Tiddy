@@ -102,7 +102,7 @@ const runMigrations = async () => {
     const filteredFiles = files.filter((value: string) => /.sql$/.test(value));
 
     // Get new files to migrate
-    const newMigrations = filteredFiles.filter(value =>  {
+    const newMigrations = filteredFiles.filter(value => {
       const fileName = value.replace(/.[a-z]+$/, '');
       return -1 === migratedFiles.indexOf(fileName);
     });

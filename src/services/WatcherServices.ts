@@ -32,7 +32,7 @@ export default class WatcherServices {
 
       await client.query({
         text: query,
-        values: [channelId, moveChannelId, teamId, emojiText, limit, action,],
+        values: [channelId, moveChannelId, teamId, emojiText, limit, action],
       });
     }
 

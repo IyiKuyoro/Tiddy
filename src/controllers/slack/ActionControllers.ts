@@ -4,7 +4,12 @@ import axios from 'axios';
 import { Logger } from '../../helpers/logger';
 import WatcherServices from '../../services/WatcherServices';
 import WorkspaceService from '../../services/WorkspaceServices';
-import { buildChannelWatcherDialog, generateMoveToChannelMessage, generateRemoveWatcherMessage, getWatcherInfo } from './Helpers/ActionControllers';
+import {
+  buildChannelWatcherDialog,
+  generateMoveToChannelMessage,
+  generateRemoveWatcherMessage,
+  getWatcherInfo,
+} from './Helpers/ActionControllers';
 import { buildWelcomeMessage } from './Helpers/SlashCommands';
 
 export default class ActionControllers {
@@ -84,7 +89,7 @@ export default class ActionControllers {
         // Add move message watcher
         const channelMoveMsg = generateMoveToChannelMessage(data.watch_channel, data.reaction_limit, data.emoji_text);
         await axios.post(state.responseUrl, {
-          delete_original: true
+          delete_original: true,
         });
         respond(channelMoveMsg);
       }
@@ -173,14 +178,21 @@ export default class ActionControllers {
    */
   public static async addMoveWatcher(payload: any, respond: any) {
     try {
-      const [ action ] = payload.actions;
+      const [action] = payload.actions;
 
       const watcherInfo = {
         moveToChannelId: action.selected_channel,
         ...getWatcherInfo(action.action_id),
       };
 
-      await WatcherServices.addWatcher(watcherInfo.channelId, watcherInfo.reaction, watcherInfo.limit, 'move', payload.team.id, watcherInfo.moveToChannelId);
+      await WatcherServices.addWatcher(
+        watcherInfo.channelId,
+        watcherInfo.reaction,
+        watcherInfo.limit,
+        'move',
+        payload.team.id,
+        watcherInfo.moveToChannelId,
+      );
 
       await axios.post(payload.response_url, {
         replace_original: true,
@@ -196,7 +208,13 @@ export default class ActionControllers {
   }
 
   private static async addDeleteWatcher(data: any, state: { responseUrl: string }, payload: any) {
-    await WatcherServices.addWatcher(data.watch_channel, data.emoji_text, data.reaction_limit, data.tiddy_action, payload.team.id);
+    await WatcherServices.addWatcher(
+      data.watch_channel,
+      data.emoji_text,
+      data.reaction_limit,
+      data.tiddy_action,
+      payload.team.id,
+    );
 
     await axios.post(state.responseUrl, {
       replace_original: true,
