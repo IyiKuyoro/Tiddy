@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Logger } from '../../helpers/logger';
 import WatcherServices from '../../services/WatcherServices';
 import WorkspaceService from '../../services/WorkspaceServices';
-import { buildChannelWatcherDialog, generateRemoveWatcherMessage } from './Helpers/ActionControllers';
+import { buildChannelWatcherDialog, generateMoveToChannelMessage, generateRemoveWatcherMessage, getWatcherInfo } from './Helpers/ActionControllers';
 import { buildWelcomeMessage } from './Helpers/SlashCommands';
 
 export default class ActionControllers {
@@ -52,7 +52,7 @@ export default class ActionControllers {
    * @description Add a new watcher to the channel
    * @param  {any} payload The slack payload sent
    */
-  public static async addWatcher(payload: any) {
+  public static async addWatcher(payload: any, respond: any) {
     try {
       const data = { ...payload.submission };
       const watcher = await WatcherServices.getWatcherByWorkspaceID(
@@ -60,6 +60,7 @@ export default class ActionControllers {
         data.watch_channel,
         data.emoji_text,
       );
+      const state = JSON.parse(payload.state);
 
       if (watcher.id !== null) {
         return {
@@ -76,22 +77,23 @@ export default class ActionControllers {
         };
       }
 
-      await WatcherServices.addWatcher(
-        data.watch_channel,
-        data.emoji_text,
-        data.reaction_limit,
-        data.tiddy_action,
-        payload.team.id,
-      );
-
-      const state = JSON.parse(payload.state);
-      await axios.post(state.responseUrl, {
-        replace_original: true,
-        response_type: 'ephemeral',
-        text: `Ok! I will begin watching <#${data.watch_channel}> for the :${data.emoji_text}: reaction.`,
-      });
+      if (data.tiddy_action === 'delete') {
+        // Add delete message watcher
+        await ActionControllers.addDeleteWatcher(data, state, payload);
+      } else {
+        // Add move message watcher
+        const channelMoveMsg = generateMoveToChannelMessage(data.watch_channel, data.reaction_limit, data.emoji_text);
+        await axios.post(state.responseUrl, {
+          delete_original: true
+        });
+        respond(channelMoveMsg);
+      }
     } catch (error) {
       Logger.error(error);
+      respond({
+        text:
+          ':interrobang: I am sorry I was unable to process that action. I have notified my maintainer, but please feel free to give it another go.',
+      });
     }
   }
 
@@ -162,5 +164,44 @@ export default class ActionControllers {
           ':interrobang: I am sorry I was unable to process that action. I have notified my maintainer, but please feel free to give it another go.',
       });
     }
+  }
+
+  /**
+   * @description Display the original welcome message
+   * @param  {any} payload The slack payload sent
+   * @param  {any} respond The respond function
+   */
+  public static async addMoveWatcher(payload: any, respond: any) {
+    try {
+      const [ action ] = payload.actions;
+
+      const watcherInfo = {
+        moveToChannelId: action.selected_channel,
+        ...getWatcherInfo(action.action_id),
+      };
+
+      await WatcherServices.addWatcher(watcherInfo.channelId, watcherInfo.reaction, watcherInfo.limit, 'move', payload.team.id, watcherInfo.moveToChannelId);
+
+      await axios.post(payload.response_url, {
+        replace_original: true,
+        response_type: 'ephemeral',
+        text: `Ok! I will begin watching <#${watcherInfo.channelId}> for the :${watcherInfo.reaction}: reaction.`,
+      });
+    } catch (error) {
+      Logger.error(error);
+      respond({
+        text: ':interrobang: I am sorry I was unable to process that action.',
+      });
+    }
+  }
+
+  private static async addDeleteWatcher(data: any, state: { responseUrl: string }, payload: any) {
+    await WatcherServices.addWatcher(data.watch_channel, data.emoji_text, data.reaction_limit, data.tiddy_action, payload.team.id);
+
+    await axios.post(state.responseUrl, {
+      replace_original: true,
+      response_type: 'ephemeral',
+      text: `Ok! I will begin watching <#${data.watch_channel}> for the :${data.emoji_text}: reaction.`,
+    });
   }
 }

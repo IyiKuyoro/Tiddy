@@ -1,4 +1,5 @@
 import ButtonElement, { ButtonStyle } from 'slack-block-msg-kit/BlockElements/ButtonElement';
+import ChannelSelectElement from 'slack-block-msg-kit/BlockElements/ChannelSelectElement';
 import StaticSelectElement from 'slack-block-msg-kit/BlockElements/StaticSelectElement';
 import Actions from 'slack-block-msg-kit/Blocks/Actions';
 import Section from 'slack-block-msg-kit/Blocks/Section';
@@ -35,7 +36,10 @@ export const buildChannelWatcherDialog = (state: { responseUrl: string }) => {
 
   // Generate action input
   const action = new DialogSelectElement('Action:', 'tiddy_action');
-  action.addOptions([new DialogSelectOption('Delete', 'delete')]).addPlaceholder('Select an action');
+  action
+    .addOptions([new DialogSelectOption('Delete', 'delete')])
+    .addOptions([new DialogSelectOption('Move', 'move')])
+    .addPlaceholder('Select an action');
 
   // Generate the dialog
   const dialog = new Dialog('Add a Channel Watcher', 'CLB001', [channelSelect, emojiText, reactionLimit, action]);
@@ -80,6 +84,44 @@ export const generateRemoveWatcherMessage = (watchers: IWatcher[]) => {
 
   return msg;
 };
+
+/**
+ * @description Generate the message that is used to select the channel to move messages to
+ */
+export const generateMoveToChannelMessage = (channelId: string, limit: number, reaction: string): InteractiveMessage => {
+  const msgSection = new Section(
+    new Text(TextType.plainText, `What channel would you like to move messages that have gotten ${limit} :${reaction}: reaction(s) to`, true),
+    'BLK005',
+  );
+
+  // Build channel select drop down
+  const channelList = new ChannelSelectElement(
+    `ACT006/${JSON.stringify({
+      channelId,
+      limit,
+      reaction,
+    })}`,
+    'Select channel to receive message'
+  );
+
+  const actions = new Actions([channelList]);
+
+  const msg = new InteractiveMessage('Select channel to move messages to.');
+  msg
+    .addBlock(msgSection)
+    .addBlock(actions);
+
+  return msg
+}
+
+/**
+ * @description Get the watcher info from the action id string
+ */
+export const getWatcherInfo = (actionId: string): { limit: number, reaction: string, channelId: string } => {
+  const [ _, watcherInfo ] = actionId.split('/');
+
+  return JSON.parse(watcherInfo);
+}
 
 const groupWatchers = (watchers: IWatcher[]): OptionGroup[] => {
   const groupedWatcher: { [channelId: string]: Option[] } = {};
