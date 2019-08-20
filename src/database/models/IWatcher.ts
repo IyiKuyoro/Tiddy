@@ -7,4 +7,5 @@ export default interface IWatcher {
   tiddy_action: string;
   created_at: Date;
   updated_at: Date;
+  move_channel_id: string;
 }
