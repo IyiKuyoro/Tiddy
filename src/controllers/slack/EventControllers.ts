@@ -1,9 +1,11 @@
 import { WebClient } from '@slack/web-api';
 
+import IWatcher from '../../database/models/IWatcher';
 import { Logger } from '../../helpers/logger';
 import MessageReactionCountService from '../../services/MessageReactionCountServices';
 import WatcherServices from '../../services/WatcherServices';
 import WorkspaceService from '../../services/WorkspaceServices';
+import { createPermissionRequest } from './Helpers/EventControllers';
 
 export default class EventControllers {
   public static async reactionAdded(event: any, body: any) {
@@ -24,11 +26,16 @@ export default class EventControllers {
         if (count.get_reaction_counts >= watcher.reaction_limit) {
           const web = new WebClient(teamInfo.access_token);
 
-          // Delete message from channel
-          web.chat.delete({
-            channel: event.item.channel,
-            ts: event.item.ts,
-          });
+          if (watcher.tiddy_action === 'delete') {
+            // Delete message from channel
+            web.chat.delete({
+              channel: event.item.channel,
+              ts: event.item.ts,
+            });
+          } else {
+            // Get message from slack
+            await EventControllers.sendAuthorDM(web, event, watcher);
+          }
 
           await MessageReactionCountService.removeMessageReactionCountRecord(event.item.ts, watcher.id);
         }
@@ -38,6 +45,9 @@ export default class EventControllers {
     }
   }
 
+  /**
+   * @description Reduce the number of reactions
+   */
   public static async reactionRemoved(event: any, body: any) {
     try {
       // Verify that that channel has been added for watch
@@ -53,5 +63,34 @@ export default class EventControllers {
     } catch (error) {
       Logger.error(error);
     }
+  }
+
+  /**
+   * @description Send a DM to the message author requesting permission to post on their behave
+   */
+  private static async sendAuthorDM(web: WebClient, event: any, watcher: IWatcher) {
+    const channelHistory: any = await web.channels.history({
+      channel: event.item.channel,
+      inclusive: true,
+      latest: event.item.ts,
+      limit: 1,
+      oldest: event.item.ts,
+    });
+    // Collect message info
+    const messageInfo = {
+      channel: watcher.move_channel_id,
+      message: channelHistory.messages[0].text,
+      userId: channelHistory.messages[0].user,
+    };
+    // Open a conversation with the message author
+    const conversation: any = await web.conversations.open({
+      users: channelHistory.messages[0].user
+    });
+    // Send the message author a DM
+    web.chat.postMessage({
+      blocks: createPermissionRequest(event, watcher, messageInfo),
+      channel: conversation.channel.id,
+      text: 'Seems like members of your workspace want to help you direct your message to the appropriate channel.'
+    });
   }
 }
