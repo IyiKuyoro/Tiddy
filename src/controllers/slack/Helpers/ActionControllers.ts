@@ -1,3 +1,4 @@
+import axios from 'axios';
 import ButtonElement, { ButtonStyle } from 'slack-block-msg-kit/BlockElements/ButtonElement';
 import ChannelSelectElement from 'slack-block-msg-kit/BlockElements/ChannelSelectElement';
 import StaticSelectElement from 'slack-block-msg-kit/BlockElements/StaticSelectElement';
@@ -13,6 +14,7 @@ import DialogTextElement, { DialogTextSubTypes } from 'slack-block-msg-kit/Featu
 import InteractiveMessage from 'slack-block-msg-kit/InteractiveMessage';
 
 import IWatcher from '../../../database/models/IWatcher';
+import { Logger } from '../../../helpers/logger';
 
 export const buildChannelWatcherDialog = (state: { responseUrl: string }) => {
   // Generate channel select input
@@ -167,3 +169,19 @@ const groupWatchers = (watchers: IWatcher[]): OptionGroup[] => {
 
   return watchersOptionGroups;
 };
+
+export function handleActionError(error: any, respond: any) {
+  Logger.error(error);
+  respond({
+    text:
+      ':interrobang: I am sorry I was unable to process that action. I have notified my maintainer, but please feel free to give it another go.',
+  });
+}
+
+export async function displayAddWatcherSuccessMessage(responseUrl: string, data: any) {
+  await axios.post(responseUrl, {
+    replace_original: true,
+    response_type: 'ephemeral',
+    text: `Ok! I will begin watching <#${data.watch_channel}> for the :${data.emoji_text}: reaction.`,
+  });
+}

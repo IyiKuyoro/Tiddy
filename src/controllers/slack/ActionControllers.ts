@@ -1,14 +1,15 @@
 import { WebClient } from '@slack/web-api';
 import axios from 'axios';
 
-import { Logger } from '../../helpers/logger';
 import WatcherServices from '../../services/WatcherServices';
 import WorkspaceService from '../../services/WorkspaceServices';
 import {
   buildChannelWatcherDialog,
+  displayAddWatcherSuccessMessage,
   generateMoveToChannelMessage,
   generateRemoveWatcherMessage,
   getWatcherInfo,
+  handleActionError,
 } from './Helpers/ActionControllers';
 import { buildWelcomeMessage } from './Helpers/SlashCommands';
 
@@ -45,11 +46,7 @@ export default class ActionControllers {
         trigger_id: payload.trigger_id,
       });
     } catch (error) {
-      Logger.error(error);
-      respond({
-        text:
-          ':interrobang: I am sorry I hit an error with that last request. I have logged that for my maintainers. Please feel free to try again.',
-      });
+      handleActionError(error, respond);
     }
   }
 
@@ -94,11 +91,7 @@ export default class ActionControllers {
         respond(channelMoveMsg);
       }
     } catch (error) {
-      Logger.error(error);
-      respond({
-        text:
-          ':interrobang: I am sorry I was unable to process that action. I have notified my maintainer, but please feel free to give it another go.',
-      });
+      handleActionError(error, respond);
     }
   }
 
@@ -117,11 +110,7 @@ export default class ActionControllers {
 
       respond(message);
     } catch (error) {
-      Logger.error(error);
-      respond({
-        text:
-          ':interrobang: I am sorry I was unable to process that action. I have notified my maintainer, but please feel free to give it another go.',
-      });
+      handleActionError(error, respond);
     }
   }
 
@@ -136,10 +125,7 @@ export default class ActionControllers {
 
       respond(message);
     } catch (error) {
-      Logger.error(error);
-      respond({
-        text: ':interrobang: I am sorry I was unable to process that action.',
-      });
+      handleActionError(error, respond);
     }
   }
 
@@ -163,11 +149,7 @@ export default class ActionControllers {
         text: 'Got it!',
       });
     } catch (error) {
-      Logger.error(error);
-      respond({
-        text:
-          ':interrobang: I am sorry I was unable to process that action. I have notified my maintainer, but please feel free to give it another go.',
-      });
+      handleActionError(error, respond);
     }
   }
 
@@ -194,19 +176,35 @@ export default class ActionControllers {
         watcherInfo.moveToChannelId,
       );
 
-      await axios.post(payload.response_url, {
-        replace_original: true,
-        response_type: 'ephemeral',
-        text: `Ok! I will begin watching <#${watcherInfo.channelId}> for the :${watcherInfo.reaction}: reaction.`,
-      });
+      await displayAddWatcherSuccessMessage(payload.response_url, watcherInfo);
     } catch (error) {
-      Logger.error(error);
-      respond({
-        text: ':interrobang: I am sorry I was unable to process that action.',
-      });
+      handleActionError(error, respond);
     }
   }
 
+  /**
+   * @description Update the direct message sent to the user
+   */
+  public static async updateDM(payload: any, respond: any) {
+    try {
+      const workspaceInfo = await WorkspaceService.getWorkspaceInfo(payload.team.id);
+      const web = new WebClient();
+
+      await web.chat.update({
+        blocks: [],
+        channel: payload.container.channel_id,
+        text: 'Thanks.',
+        token: workspaceInfo.bot_access_token,
+        ts: payload.container.message_ts,
+      });
+    } catch (error) {
+      handleActionError(error, respond);
+    }
+  }
+
+  /**
+   * @description Add a new delete watcher
+   */
   private static async addDeleteWatcher(data: any, state: { responseUrl: string }, payload: any) {
     await WatcherServices.addWatcher(
       data.watch_channel,
@@ -216,10 +214,6 @@ export default class ActionControllers {
       payload.team.id,
     );
 
-    await axios.post(state.responseUrl, {
-      replace_original: true,
-      response_type: 'ephemeral',
-      text: `Ok! I will begin watching <#${data.watch_channel}> for the :${data.emoji_text}: reaction.`,
-    });
+    await displayAddWatcherSuccessMessage(state.responseUrl, data);
   }
 }

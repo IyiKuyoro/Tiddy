@@ -30,4 +30,7 @@ slackInteractions.action({ actionId: 'ACT005' }, ActionControllers.displayWelcom
 // Handle add move message action
 slackInteractions.action({ actionId: /^ACT006.*/ }, ActionControllers.addMoveWatcher);
 
+// Handle permission to post message on behave of author
+slackInteractions.action({ actionId: 'ACT007' }, ActionControllers.updateDM);
+
 export default slackInteractions;
