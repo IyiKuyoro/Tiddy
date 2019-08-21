@@ -24,5 +24,6 @@
     "statusBar.background": "#048800",
     "statusBarItem.hoverBackground": "#05bb00",
     "statusBar.foreground": "#e7e7e7"
-  }
+  },
+  "peacock.color": "#048800"
 }

@@ -1,6 +1,7 @@
 import { WebClient } from '@slack/web-api';
 
 import IWatcher from '../../database/models/IWatcher';
+import IWorkspace from '../../database/models/IWorkspace';
 import { Logger } from '../../helpers/logger';
 import MessageReactionCountService from '../../services/MessageReactionCountServices';
 import WatcherServices from '../../services/WatcherServices';
@@ -24,9 +25,9 @@ export default class EventControllers {
 
         // If reaction count has reached or exceeded the limit
         if (count.get_reaction_counts >= watcher.reaction_limit) {
-          const web = new WebClient(teamInfo.access_token);
-
           if (watcher.tiddy_action === 'delete') {
+            const web = new WebClient(teamInfo.access_token);
+
             // Delete message from channel
             web.chat.delete({
               channel: event.item.channel,
@@ -34,7 +35,7 @@ export default class EventControllers {
             });
           } else {
             // Get message from slack
-            await EventControllers.sendAuthorDM(web, event, watcher);
+            await EventControllers.sendAuthorDM(teamInfo, event, watcher);
           }
 
           await MessageReactionCountService.removeMessageReactionCountRecord(event.item.ts, watcher.id);
@@ -68,29 +69,27 @@ export default class EventControllers {
   /**
    * @description Send a DM to the message author requesting permission to post on their behave
    */
-  private static async sendAuthorDM(web: WebClient, event: any, watcher: IWatcher) {
-    const channelHistory: any = await web.channels.history({
-      channel: event.item.channel,
-      inclusive: true,
-      latest: event.item.ts,
-      limit: 1,
-      oldest: event.item.ts,
+  private static async sendAuthorDM(teamInfo: IWorkspace, event: any, watcher: IWatcher) {
+    const webBot = new WebClient(teamInfo.bot_access_token);
+
+    // Open a conversation with the message author
+    const conversation: any = await webBot.conversations.open({
+      users: event.item_user,
     });
+
     // Collect message info
     const messageInfo = {
       channel: watcher.move_channel_id,
-      message: channelHistory.messages[0].text,
-      userId: channelHistory.messages[0].user,
+      messageTs: event.item.ts,
+      originalChannel: event.item.channel,
+      teamId: teamInfo.team_id,
     };
-    // Open a conversation with the message author
-    const conversation: any = await web.conversations.open({
-      users: channelHistory.messages[0].user
-    });
+
     // Send the message author a DM
-    web.chat.postMessage({
+    const c = await webBot.chat.postMessage({
       blocks: createPermissionRequest(event, watcher, messageInfo),
       channel: conversation.channel.id,
-      text: 'Seems like members of your workspace want to help you direct your message to the appropriate channel.'
+      text: 'Seems like members of your workspace want to help you direct your message to the appropriate channel.',
     });
   }
 }
