@@ -1,0 +1,39 @@
+version: 2
+jobs:
+  build: # name of your job
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: Deployment
+          command: |
+            docker build --rm=false -t tiddy .
+            docker login --username=$HEROKU_EMAIL  --password=$HEROKU_API_KEY registry.heroku.com
+            docker tag tiddy:latest registry.heroku.com/tiddy/web
+            docker push registry.heroku.com/tiddy/web
+            WEB_DOCKER_IMAGE_ID=$(docker inspect tiddy --format={{.Id}})
+            echo "export WEB_DOCKER_IMAGE_ID=$WEB_DOCKER_IMAGE_ID" >> $BASH_ENV
+            curl -n -X PATCH https://api.heroku.com/apps/tiddy/formation \
+              -d '{
+              "updates": [
+                {
+                  "type": "web",
+                  "docker_image": "'"$WEB_DOCKER_IMAGE_ID"'"
+                }
+              ]}' \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/vnd.heroku+json; version=3.docker-releases" \
+            -H "Authorization: Bearer $HEROKU_API_KEY"
+
+      - run:
+          name: 'What was my custom environment variable?'
+          command: echo $(docker inspect tiddy --format={{.Id}})
+
+workflows:
+  version: 2
+  workflow:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: develop

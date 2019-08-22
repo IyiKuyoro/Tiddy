@@ -1,14 +1,12 @@
 FROM node:10.16.3
 
-LABEL author="Opeoluwa Iyi-Kuyoro"
+LABEL author="Tomi Adebanjo"
 
-ENV NODE_ENV=dev
+ENV NODE_ENV=production
 
 COPY . /app
 WORKDIR /app
 
-RUN npm run setup
+RUN npm install -g typescript
 
-EXPOSE 4000
-
-ENTRYPOINT ["npm", "run", "dev"]
+CMD ["npm", "run", "deploy"]
