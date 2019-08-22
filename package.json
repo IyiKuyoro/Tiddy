@@ -4,7 +4,7 @@
   "description": "Tiddy is a nice slack app that helps keep your workspace clean by moving messages to the appropriate channel",
   "main": "./dist/index.js",
   "scripts": {
-    "build": "tsc && npm run prod-migrate",
+    "build": "npm run tsc && npm run prod-migrate",
     "cev": "chmod u+x ./scripts/cev.sh && ./scripts/cev.sh",
     "dev": "nodemon",
     "format": "npm run lint && prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
@@ -17,7 +17,9 @@
     "un-migrate": "node bin/unMigrate",
     "setup": "npm i && chmod u+x ./scripts/setup.sh && ./scripts/setup.sh",
     "start": "NODE_ENV=production node ./bin/prod",
-    "test": "jest"
+    "deploy": "npm run setup && npm run build && npm start",
+    "test": "jest",
+    "tsc": "tsc"
   },
   "repository": {
     "type": "git",
