@@ -182,6 +182,6 @@ export async function displayAddWatcherSuccessMessage(responseUrl: string, data:
   await axios.post(responseUrl, {
     replace_original: true,
     response_type: 'ephemeral',
-    text: `Ok! I will begin watching <#${data.watch_channel}> for the :${data.emoji_text}: reaction.`,
+    text: `Ok! I will begin watching <#${data.channelId}> for the :${data.reaction}: reaction.`,
   });
 }

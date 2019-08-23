@@ -3,4 +3,5 @@ export default interface IMessageInfo {
   messageTs: any;
   originalChannel: string;
   user?: boolean;
+  always?: boolean;
 }

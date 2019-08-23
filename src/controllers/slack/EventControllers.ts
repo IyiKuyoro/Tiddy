@@ -1,12 +1,14 @@
 import { WebClient } from '@slack/web-api';
 
+import IMessageInfo from '../../database/models/IMessageInfo';
 import IWatcher from '../../database/models/IWatcher';
 import IWorkspace from '../../database/models/IWorkspace';
 import { Logger } from '../../helpers/logger';
 import MessageReactionCountService from '../../services/MessageReactionCountServices';
+import UserAuthServices from '../../services/UserAuthServices';
 import WatcherServices from '../../services/WatcherServices';
 import WorkspaceService from '../../services/WorkspaceServices';
-import { createPermissionRequest } from './Helpers/EventControllers';
+import { createPermissionRequest, moveMessage } from './Helpers/EventControllers';
 
 export default class EventControllers {
   public static async reactionAdded(event: any, body: any) {
@@ -34,8 +36,25 @@ export default class EventControllers {
               ts: event.item.ts,
             });
           } else {
-            // Get message from slack
-            await EventControllers.sendAuthorDM(teamInfo, event, watcher);
+            const token = await UserAuthServices.getUserToken(teamInfo.id, event.item_user);
+
+            // Collect message info
+            const messageInfo = {
+              channel: watcher.move_channel_id,
+              messageTs: event.item.ts,
+              originalChannel: event.item.channel,
+              teamId: teamInfo.team_id,
+            };
+
+            if (token) {
+              const web = new WebClient(token);
+
+              // Move message to appropriate channel
+              await moveMessage(web, messageInfo);
+            } else {
+              // Get message from slack
+              await EventControllers.sendAuthorDM(teamInfo, event, watcher, messageInfo);
+            }
           }
 
           await MessageReactionCountService.removeMessageReactionCountRecord(event.item.ts, watcher.id);
@@ -69,21 +88,13 @@ export default class EventControllers {
   /**
    * @description Send a DM to the message author requesting permission to post on their behave
    */
-  private static async sendAuthorDM(teamInfo: IWorkspace, event: any, watcher: IWatcher) {
+  private static async sendAuthorDM(teamInfo: IWorkspace, event: any, watcher: IWatcher, messageInfo: IMessageInfo) {
     const webBot = new WebClient(teamInfo.bot_access_token);
 
     // Open a conversation with the message author
     const conversation: any = await webBot.conversations.open({
       users: event.item_user,
     });
-
-    // Collect message info
-    const messageInfo = {
-      channel: watcher.move_channel_id,
-      messageTs: event.item.ts,
-      originalChannel: event.item.channel,
-      teamId: teamInfo.team_id,
-    };
 
     // Send the message author a DM
     const c = await webBot.chat.postMessage({
