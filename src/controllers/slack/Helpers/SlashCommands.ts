@@ -25,3 +25,35 @@ Here are a few things I can do for you right away. :smile:`,
 
   return message;
 };
+
+export function buildTokenRevokeResponse(): InteractiveMessage {
+  const msgSection = new Section(
+    new Text(
+      TextType.plainText,
+      `Got it! Be rest assured. With us, delete means delete!`,
+      true,
+    ),
+    'BLK006',
+  );
+
+  const message = new InteractiveMessage('Your auth access has been revoked');
+  message.addBlock(msgSection);
+
+  return message;
+}
+
+export function noAuthFound(): InteractiveMessage {
+  const msgSection = new Section(
+    new Text(
+      TextType.plainText,
+      ':thinking_face: I don\'t remember you giving me the access.',
+      true,
+    ),
+    'BLK007',
+  );
+
+  const message = new InteractiveMessage('I don\'t have access.');
+  message.addBlock(msgSection);
+
+  return message;
+}
