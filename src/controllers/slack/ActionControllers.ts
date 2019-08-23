@@ -190,10 +190,11 @@ export default class ActionControllers {
       const workspaceInfo = await WorkspaceService.getWorkspaceInfo(payload.team.id);
       const web = new WebClient();
 
+      const text = `Thanks. ${(payload.actions[0].action_id === 'ACT008' ? 'If you ever change your mind, just hit `/tiddy revoke`' : 'I will not remember that.')}`;
       await web.chat.update({
         blocks: [],
         channel: payload.container.channel_id,
-        text: 'Thanks.',
+        text,
         token: workspaceInfo.bot_access_token,
         ts: payload.container.message_ts,
       });

@@ -9,6 +9,8 @@ This file will contain a list of action identifiers in the application
 - BLK003: Remove watcher section block.
 - BLK004: Action buttons for removing watcher.
 - BLK005: Move to channel channel request message.
+- BLK006: Access revoke success.
+- BLK007: Access was never granted.
 
 ## Action IDs
 

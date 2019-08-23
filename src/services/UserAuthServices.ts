@@ -1,5 +1,7 @@
 import RedisClient from '../config/RedisConfig';
 import client from '../database/client';
+import IWorkspace from '../database/models/IWorkspace';
+import WorkspaceService from './WorkspaceServices';
 
 export default class UserAuthServices {
   /**
@@ -46,5 +48,17 @@ export default class UserAuthServices {
     }
 
     return token || '';
+  }
+
+  public static async deleteToken(userId: string, workspaceId: number) {
+    const text = 'DELETE FROM user_auth WHERE user_id = $1 AND workspace_id = $2';
+
+    await client.query({
+      text,
+      values: [userId, workspaceId],
+    });
+
+    const redisKey = `Tiddy_user_auth:${workspaceId}-${userId}`;
+    RedisClient.DEL(redisKey);
   }
 }
