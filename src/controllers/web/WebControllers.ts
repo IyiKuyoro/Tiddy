@@ -3,7 +3,9 @@ import { WebClient } from '@slack/web-api';
 import config from '../../config';
 import IMessageInfo from '../../database/models/IMessageInfo';
 import { Logger } from '../../helpers/logger';
+import UserAuthServices from '../../services/UserAuthServices';
 import WorkspaceService from '../../services/WorkspaceServices';
+import { moveMessage } from '../slack/Helpers/EventControllers';
 import { acquireOAuthAccess } from './helpers/WebControllers';
 
 class WebController {
@@ -94,29 +96,20 @@ class WebController {
   private static async userAuth(req: any, res: any, messageInfo: IMessageInfo) {
     const response = await acquireOAuthAccess(req.query.code);
 
+    if (messageInfo.always) {
+      // Add a new user to the DB
+      UserAuthServices.addNewUser(
+        response.data.team_id,
+        response.data.user_id,
+        response.data.access_token,
+        response.data.scope
+      );
+    }
+
     const web = new WebClient(response.data.access_token);
 
     // Acquire the message content from the channel history
-    const channelHistory: any = await web.channels.history({
-      channel: messageInfo.originalChannel,
-      inclusive: true,
-      latest: messageInfo.messageTs,
-      limit: 1,
-      oldest: messageInfo.messageTs,
-    });
-
-    // Post message in the appropriate channel
-    await web.chat.postMessage({
-      as_user: true,
-      channel: messageInfo.channel,
-      text: channelHistory.messages[0].text,
-    });
-
-    // Delete original message
-    await web.chat.delete({
-      channel: messageInfo.originalChannel,
-      ts: messageInfo.messageTs,
-    });
+    await moveMessage(web, messageInfo);
 
     res.render('userauth', {
       title: 'Success',
@@ -125,3 +118,4 @@ class WebController {
 }
 
 export default WebController;
+

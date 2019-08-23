@@ -1,3 +1,4 @@
+import { WebClient } from '@slack/web-api';
 import ButtonElement from 'slack-block-msg-kit/BlockElements/ButtonElement';
 import Actions from 'slack-block-msg-kit/Blocks/Actions';
 import Block from 'slack-block-msg-kit/Blocks/Block';
@@ -9,10 +10,10 @@ import IMessageInfo from '../../../database/models/IMessageInfo';
 import IWatcher from '../../../database/models/IWatcher';
 
 export function createPermissionRequest(event: any, watcher: IWatcher, messageInfo: IMessageInfo): Block[] {
-  const singleUseBtn = new ButtonElement('Post on my behalf', 'ACT007', JSON.stringify(messageInfo));
+  const singleUseBtn = new ButtonElement('Post on my behalf (once)', 'ACT007', JSON.stringify(messageInfo));
   singleUseBtn.addUrl(generateUserAuthButton(messageInfo));
-  // const multipleUseButton = new ButtonElement('Post on my behalf', 'ACT007', JSON.stringify(messageInfo));
-  // multipleUseButton.addUrl(generateUserAuthButton(false));
+  const multipleUseButton = new ButtonElement('Post on my behalf (always)', 'ACT008', JSON.stringify(messageInfo));
+  multipleUseButton.addUrl(generateUserAuthButton({always: true, ...messageInfo}));
 
   return [
     new Section(
@@ -27,9 +28,32 @@ export function createPermissionRequest(event: any, watcher: IWatcher, messageIn
     ),
     new Actions([
       singleUseBtn,
-      // multipleUseButton,
+      multipleUseButton,
     ]),
   ];
+}
+
+export async function moveMessage(web: WebClient, messageInfo: IMessageInfo) {
+  const channelHistory: any = await web.channels.history({
+    channel: messageInfo.originalChannel,
+    inclusive: true,
+    latest: messageInfo.messageTs,
+    limit: 1,
+    oldest: messageInfo.messageTs,
+  });
+
+  // Post message in the appropriate channel
+  await web.chat.postMessage({
+    as_user: true,
+    channel: messageInfo.channel,
+    text: channelHistory.messages[0].text,
+  });
+
+  // Delete original message
+  await web.chat.delete({
+    channel: messageInfo.originalChannel,
+    ts: messageInfo.messageTs,
+  });
 }
 
 function generateUserAuthButton(messageInfo: IMessageInfo): string {
