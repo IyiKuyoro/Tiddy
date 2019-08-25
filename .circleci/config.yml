@@ -15,7 +15,7 @@ jobs:
 
             echo $APP_NAME
             docker build --rm=false -t $APP_NAME .
-            docker login --username=$HEROKU_EMAIL  --password=$HEROKU_API_KEY registry.heroku.com
+            docker login --username=$HEROKU_EMAIL  --password-stdin=$HEROKU_API_KEY registry.heroku.com
             docker tag $APP_NAME:latest registry.heroku.com/$APP_NAME/web
             docker push registry.heroku.com/$APP_NAME/web
             WEB_DOCKER_IMAGE_ID=$(docker inspect $APP_NAME --format={{.Id}})
