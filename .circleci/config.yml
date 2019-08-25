@@ -7,13 +7,20 @@ jobs:
       - run:
           name: Deployment
           command: |
-            docker build --rm=false -t tiddy .
+            if [ "${CIRCLE_BRANCH}" = "master" ]; then
+              export APP_NAME='tiddy'
+            elif [ "${CIRCLE_BRANCH}" = "develop" ]; then
+              export APP_NAME='tiddy-staging'
+            fi
+
+            echo $APP_NAME
+            docker build --rm=false -t $APP_NAME .
             docker login --username=$HEROKU_EMAIL  --password=$HEROKU_API_KEY registry.heroku.com
-            docker tag tiddy:latest registry.heroku.com/tiddy/web
-            docker push registry.heroku.com/tiddy/web
-            WEB_DOCKER_IMAGE_ID=$(docker inspect tiddy --format={{.Id}})
+            docker tag $APP_NAME:latest registry.heroku.com/$APP_NAME/web
+            docker push registry.heroku.com/$APP_NAME/web
+            WEB_DOCKER_IMAGE_ID=$(docker inspect $APP_NAME --format={{.Id}})
             echo "export WEB_DOCKER_IMAGE_ID=$WEB_DOCKER_IMAGE_ID" >> $BASH_ENV
-            curl -n -X PATCH https://api.heroku.com/apps/tiddy/formation \
+            curl -n -X PATCH https://api.heroku.com/apps/$APP_NAME/formation \
               -d '{
               "updates": [
                 {
@@ -27,7 +34,7 @@ jobs:
 
       - run:
           name: 'What was my custom environment variable?'
-          command: echo $(docker inspect tiddy --format={{.Id}})
+          command: echo $(docker inspect $APP_NAME --format={{.Id}})
 
 workflows:
   version: 2
