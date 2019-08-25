@@ -16,6 +16,7 @@ const config = () => {
         REDISCLOUD_URL: process.env.REDISCLOUD_URL,
         SLACK_CLIENT_ID: 111111111111.111111111111,
         SLACK_CLIENT_SECRET: 11111111111111111111111111111111,
+        SLACK_REDIRECT_URL: process.env.SLACK_APP_REDIRECT_URL,
         SLACK_SIGNING_SECRET: 11111111111111111111111111111111,
       };
     }
@@ -32,6 +33,7 @@ const config = () => {
         REDISCLOUD_URL: process.env.REDISCLOUD_URL,
         SLACK_CLIENT_ID: process.env.SLACK_CLIENT_ID,
         SLACK_CLIENT_SECRET: process.env.SLACK_CLIENT_SECRET,
+        SLACK_REDIRECT_URL: process.env.SLACK_APP_REDIRECT_URL,
         SLACK_SIGNING_SECRET: process.env.SLACK_SIGNING_SECRET,
       };
     }
@@ -48,6 +50,7 @@ const config = () => {
         REDISCLOUD_URL: process.env.REDISCLOUD_URL,
         SLACK_CLIENT_ID: process.env.SLACK_CLIENT_ID,
         SLACK_CLIENT_SECRET: process.env.SLACK_CLIENT_SECRET,
+        SLACK_REDIRECT_URL: process.env.SLACK_APP_REDIRECT_URL,
         SLACK_SIGNING_SECRET: process.env.SLACK_SIGNING_SECRET,
       };
     }

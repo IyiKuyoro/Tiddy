@@ -64,7 +64,7 @@ function generateUserAuthButton(messageInfo: IMessageInfo): string {
 
   return `https://slack.com/oauth/authorize?client_id=${
     config.SLACK_CLIENT_ID
-  }&scope=chat:write:user,channels:history&redirect_uri=https://af741e41.ngrok.io/auth/authorize&state=${JSON.stringify(
+  }&scope=chat:write:user,channels:history&redirect_uri=${config.SLACK_REDIRECT_URL}&state=${JSON.stringify(
     info,
   )}`;
 }

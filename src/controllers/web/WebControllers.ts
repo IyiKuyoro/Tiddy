@@ -68,7 +68,7 @@ class WebController {
   // slack installation url
   private static slackInstallationUrl: string = `https://slack.com/oauth/authorize?client_id=${
     config.SLACK_CLIENT_ID
-  }&scope=admin,bot,commands,channels:read,chat:write:bot,reactions:read,chat:write:user,channels:history,channels:write,groups:write,mpim:write,im:write&redirect_url=https://af741e41.ngrok.io/auth/authorize`;
+  }&scope=admin,bot,commands,channels:read,chat:write:bot,reactions:read,chat:write:user,channels:history,channels:write,groups:write,mpim:write,im:write&redirect_url=${config.SLACK_REDIRECT_URL}`;
 
   /**
    * @description Install the app in a team workspace
