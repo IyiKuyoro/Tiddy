@@ -20,8 +20,8 @@ This file will contain a list of action identifiers in the application
 - ACT004: Remove channel watcher channel watcher option select
 - ACT005: Go back from the remove watcher selection message
 - ACT006: Add move message channel watcher
-- ACT007: Grant permission to send message on behave of author once
-- ACT008: Always grant permission to send message on behave of author
+- ACT007: Grant permission to send message on behalf of author once
+- ACT008: Always grant permission to send message on behalf of author
 
 ## Callback IDs
 
