@@ -16,7 +16,7 @@ Here are a few things I can do for you right away. :smile:`,
   );
   const cancelBtn = new ButtonElement('Cancel', 'ACT002');
   cancelBtn.changeStyle(ButtonStyle.danger);
-  const addWatcher = new ButtonElement('Add Channel Watch', 'ACT001');
+  const addWatcher = new ButtonElement('Add Channel Watcher', 'ACT001');
   const rmvWatcher = new ButtonElement('Remove Channel Watcher', 'ACT003');
   const actions = new Actions([addWatcher, rmvWatcher, cancelBtn], 'BLK002');
 

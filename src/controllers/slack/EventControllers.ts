@@ -86,7 +86,7 @@ export default class EventControllers {
   }
 
   /**
-   * @description Send a DM to the message author requesting permission to post on their behave
+   * @description Send a DM to the message author requesting permission to post on their behalf
    */
   private static async sendAuthorDM(teamInfo: IWorkspace, event: any, watcher: IWatcher, messageInfo: IMessageInfo) {
     const webBot = new WebClient(teamInfo.bot_access_token);
