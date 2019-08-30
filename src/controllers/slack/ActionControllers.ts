@@ -79,6 +79,17 @@ export default class ActionControllers {
         };
       }
 
+      if (data.reaction_limit <= 0) {
+        return {
+          errors: [
+            {
+              error: 'Cannot be less than 1',
+              name: 'reaction_limit',
+            },
+          ],
+        };
+      }
+
       if (data.tiddy_action === 'delete') {
         // Add delete message watcher
         await ActionControllers.addDeleteWatcher(data, state, payload);
