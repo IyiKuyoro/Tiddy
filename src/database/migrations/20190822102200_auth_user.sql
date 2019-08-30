@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS user_auth (
   id serial UNIQUE NOT NULL,
-  workspace_id INTEGER REFERENCES workspace(id),
+  workspace_id INTEGER REFERENCES workspace(id) ON DELETE CASCADE,
   user_id VARCHAR (10) NOT NULL,
   access_token VARCHAR (100) NOT NULL,
   scope TEXT NOT NULL,

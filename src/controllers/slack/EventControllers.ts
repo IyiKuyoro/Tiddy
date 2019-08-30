@@ -11,6 +11,24 @@ import WorkspaceService from '../../services/WorkspaceServices';
 import { createPermissionRequest, moveMessage } from './Helpers/EventControllers';
 
 export default class EventControllers {
+  /**
+   * @description Uninstall the application from a workspace
+   * @param  {any} event
+   * @param  {any} body
+   */
+  public static async uninstallApp(event: any, body: any) {
+    try {
+      await WorkspaceService.deleteTeamInfo(body.team_id);
+    } catch (error) {
+      Logger.error(error);
+    }
+  }
+
+  /**
+   * @description Add a new reaction
+   * @param  {any} event
+   * @param  {any} body
+   */
   public static async reactionAdded(event: any, body: any) {
     try {
       // Verify that that channel has been added for watch

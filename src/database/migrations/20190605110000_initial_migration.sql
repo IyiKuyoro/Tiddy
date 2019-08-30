@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS workspace (
 
 CREATE TABLE IF NOT EXISTS watching_channels (
   id serial UNIQUE NOT NULL,
-  workspace_id INTEGER REFERENCES workspace(id),
+  workspace_id INTEGER REFERENCES workspace(id) ON DELETE CASCADE,
   channel_id VARCHAR (10) NOT NULL,
   emoji_text VARCHAR (50) NOT NULL,
   reaction_limit INTEGER NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS watching_channels (
 
 CREATE TABLE IF NOT EXISTS message_reaction_counts (
   id serial UNIQUE NOT NULL,
-  watching_channels_id INTEGER REFERENCES watching_channels(id),
+  watching_channels_id INTEGER REFERENCES watching_channels(id) ON DELETE CASCADE,
   message_timestamp CHAR (17) NOT NULL,
   reaction_count INTEGER NOT NULL,
   created_at TIMESTAMPTZ NOT NULL,

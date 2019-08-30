@@ -13,4 +13,7 @@ slackEvents.on('reaction_added', EventControllers.reactionAdded);
 // Handle removed reactions
 slackEvents.on('reaction_removed', EventControllers.reactionRemoved);
 
+// Handle app removed
+slackEvents.on('app_uninstalled', EventControllers.uninstallApp);
+
 export default slackEvents;

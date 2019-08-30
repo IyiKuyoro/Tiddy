@@ -77,4 +77,17 @@ export default class WorkspaceService {
 
     return result;
   }
+
+  /**
+   * @description Delete all team info from our DB
+   * @param  {string} teamId The team id
+   */
+  public static async deleteTeamInfo(teamId: string) {
+    const text = 'DELETE FROM workspace WHERE team_id = $1;';
+
+    return client.query({
+      text,
+      values: [teamId]
+    });
+  }
 }
