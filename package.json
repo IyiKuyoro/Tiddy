@@ -13,7 +13,7 @@
     "mat": "chmod u+x ./scripts/mat.sh && ./scripts/mat.sh",
     "prod-migrate": "export NODE_ENV=production; node bin/prod-migrate",
     "migrate": "node bin/migrate",
-    "prod-un-migrate": "export NODE_ENV=production; node bin/unMigrate",
+    "prod-un-migrate": "export NODE_ENV=production; node bin/prod-unMigrate",
     "un-migrate": "node bin/unMigrate",
     "setup": "npm i && chmod u+x ./scripts/setup.sh && ./scripts/setup.sh",
     "start": "NODE_ENV=production node ./bin/prod",
