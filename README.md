@@ -2,6 +2,8 @@
 
 Tiddy is a nice slack app that helps keep your workspace clean by moving messages to the appropriate channel. This application is still in development and we are currently working towards our beta release. You can follow the progress of development [here](https://www.pivotaltracker.com/n/projects/2352433).
 
+![Home page image](https://res.cloudinary.com/iyikuyoro/image/upload/v1584092692/GitHub%20Readme%20Images/Screenshot_2020-03-13_at_10.44.07.png)
+
 ## Tech Stack
 
 This project is built with the following languages and technologies
