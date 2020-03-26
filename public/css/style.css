@@ -39,7 +39,7 @@ p {
 .contain {
   max-width: 670px;
   justify-content: center;
-  overflow-y: scroll;
+  overflow-y: hidden;
 }
 
 .contain-pp {
