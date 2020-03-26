@@ -15,7 +15,7 @@
     "migrate": "node bin/migrate",
     "prod-un-migrate": "export NODE_ENV=production; node bin/prod-unMigrate",
     "un-migrate": "node bin/unMigrate",
-    "setup": "npm i && chmod u+x ./scripts/setup.sh && ./scripts/setup.sh",
+    "setup": "npm i && chmod u+x scripts/setup.sh && scripts/setup.sh",
     "start": "NODE_ENV=production node ./bin/prod",
     "deploy": "npm run setup && npm run build && npm start",
     "test": "jest",
