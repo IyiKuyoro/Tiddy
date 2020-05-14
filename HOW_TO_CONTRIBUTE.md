@@ -7,7 +7,7 @@
 - setup your local `.env` file file using the sample provided in `.env.sample`
 - We use docker for our deployment and we implore you to do the same in development. A docker file has been setup for this. You will need to have docker setup on your machine.
 
-> - Run `docker built -t tiddy` to build a local copy of your image.
+> - Run `docker build -t tiddy .` to build a local copy of your image.
 > - To start the app locally with docker, run `docker run -p [internal_port]:[external_port] tiddy`. You can also add the `-d` flag to run it in the background.
 
 ## Slack Scopes
